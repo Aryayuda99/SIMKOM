@@ -146,6 +146,11 @@ Route::get(
 );
 
 Route::get(
+    '/selesaikan-kegiatan/{id}',
+    [PengurusController::class, 'selesaikanKegiatan']
+);
+
+Route::get(
     '/keuangan',
     [PengurusController::class, 'keuangan']
 );

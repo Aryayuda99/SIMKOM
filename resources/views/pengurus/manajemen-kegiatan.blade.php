@@ -52,6 +52,12 @@
         Edit Detail
     </a>
 
+    <a
+    href="/selesaikan-kegiatan/{{ $item->id_kegiatan }}"
+>
+    Tandai Selesai
+</a>
+
 </div>
 
 @endforeach

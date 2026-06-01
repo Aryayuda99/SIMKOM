@@ -12,7 +12,7 @@
 
 <hr>
 
-@foreach($kegiatan as $item)
+@foreach($riwayat as $item)
 
 @php
 
@@ -40,14 +40,7 @@ $item->id_kegiatan
 
 $saldo = $pemasukan - $pengeluaran;
 
-$jumlahPeserta = DB::table(
-'pendaftaran_kegiatan'
-)
-->where(
-'id_kegiatan',
-$item->id_kegiatan
-)
-->count();
+$jumlahPeserta = $item->jumlah_peserta;
 
 $jumlahDokumen = DB::table(
 'dokumen_kegiatan'
@@ -76,11 +69,21 @@ $item->id_kegiatan
 </h2>
 
 <p>
-    {{ $item->tanggal_pelaksanaan }}
+    {{ $item->tanggal_selesai }}
 </p>
 
 <p>
     {{ $item->deskripsi }}
+</p>
+
+<p>
+    Status :
+    {{ $item->status }}
+</p>
+
+<p>
+    Evaluasi :
+    {{ $item->evaluasi }}
 </p>
 
 <br>
@@ -96,7 +99,7 @@ $item->id_kegiatan
             <br>
 
             <b>
-                {{ $jumlahPeserta }} orang
+                {{ $jumlahPeserta }}
             </b>
 
         </td>
@@ -167,9 +170,7 @@ $item->id_kegiatan
                 <br>
 
                 <span style="color:green">
-
                     Rp {{ number_format($pemasukan) }}
-
                 </span>
 
             </td>
@@ -181,9 +182,7 @@ $item->id_kegiatan
                 <br>
 
                 <span style="color:red">
-
                     Rp {{ number_format($pengeluaran) }}
-
                 </span>
 
             </td>
@@ -195,9 +194,7 @@ $item->id_kegiatan
                 <br>
 
                 <span style="color:blue">
-
                     Rp {{ number_format($saldo) }}
-
                 </span>
 
             </td>

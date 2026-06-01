@@ -273,19 +273,86 @@ public function updateKegiatan(Request $request)
     );
 }
 
-
-public function riwayatKegiatan()
+public function selesaikanKegiatan($id)
 {
     $kegiatan = DB::table('kegiatan')
         ->where(
-            'id_organisasi',
-            session('id_organisasi')
+            'id_kegiatan',
+            $id
+        )
+        ->first();
+
+    $jumlahRiwayat = DB::table(
+        'riwayat_kegiatan'
+    )->count();
+
+    $idRiwayat =
+        'R' .
+        str_pad(
+            $jumlahRiwayat + 1,
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+    $jumlahPeserta = DB::table(
+        'pendaftaran_kegiatan'
+    )
+    ->where(
+        'id_kegiatan',
+        $id
+    )
+    ->count();
+
+    DB::table('riwayat_kegiatan')
+        ->insert([
+
+            'id_riwayat'
+                => $idRiwayat,
+
+            'id_kegiatan'
+                => $id,
+
+            'jumlah_peserta'
+                => $jumlahPeserta . ' orang',
+
+            'tanggal_selesai'
+                => now(),
+
+            'evaluasi'
+                => '-',
+
+            'status'
+                => 'Selesai'
+
+        ]);
+
+    return redirect(
+        '/riwayat-kegiatan'
+    );
+}
+
+
+public function riwayatKegiatan()
+{
+    $riwayat = DB::table('riwayat_kegiatan')
+        ->join(
+            'kegiatan',
+            'riwayat_kegiatan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
+        ->select(
+            'riwayat_kegiatan.*',
+            'kegiatan.nama_kegiatan',
+            'kegiatan.deskripsi',
+            'kegiatan.biaya_pendaftaran'
         )
         ->get();
 
     return view(
         'pengurus.riwayat-kegiatan',
-        compact('kegiatan')
+        compact('riwayat')
     );
 }
 
