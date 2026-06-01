@@ -1,36 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profil Anggota</title>
-</head>
-<body>
+@extends('layouts.anggota')
 
-<h1>Profil Anggota</h1>
+@section('title', 'Profil Saya')
 
-<p>
-    Nama:
-    {{ $profil->nama }}
-</p>
+@section('content')
+<div class="page-title">
+    <div>
+        <h1>Profil Saya</h1>
+        <p class="subtitle">Kelola informasi profil dan lihat pencapaian Anda</p>
+    </div>
+    <button>Edit Profil</button>
+</div>
 
-<p>
-    Program Studi:
-    {{ $profil->program_studi }}
-</p>
-
-<p>
-    No HP:
-    {{ $profil->no_hp }}
-</p>
-
-<p>
-    Organisasi:
-    {{ $profil->nama_organisasi }}
-</p>
-
-<p>
-    Status:
-    {{ $profil->status_keanggotaan }}
-</p>
-
-</body>
-</html>
+<section class="card">
+    <div class="actions" style="align-items:center;gap:32px">
+        <div style="text-align:center">
+            <div class="avatar" style="width:130px;height:130px;font-size:34px;margin:auto">AF</div>
+            <h2 style="margin-top:14px">{{ $profil->nama }}</h2>
+            <span class="badge green">{{ $profil->status_keanggotaan }}</span>
+        </div>
+        <div>
+            <h2>Informasi Pribadi</h2>
+            <div class="grid two" style="margin-top:24px">
+                <p><span class="muted">Program studi</span><br><strong>{{ $profil->program_studi }}</strong></p>
+                <p><span class="muted">No HP</span><br><strong>{{ $profil->no_hp }}</strong></p>
+                <p><span class="muted">Organisasi</span><br><strong>{{ $profil->nama_organisasi }}</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection

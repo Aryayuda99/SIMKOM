@@ -1,49 +1,33 @@
 @extends('layouts.mahasiswa')
 
+@section('title', 'Pendaftaran Anggota')
+
 @section('content')
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Daftar Anggota</title>
-</head>
-<body>
-
-@if(session('success'))
-
-<script>
-    alert("{{ session('success') }}");
-</script>
-
-@endif
-
-<h1>Daftar Organisasi</h1>
-
-@foreach($organisasi as $item)
-
-<div>
-
-    <h2>
-        {{ $item->nama_organisasi }}
-    </h2>
-
-    <p>
-        {{ $item->visi }}
-    </p>
-
-    <a href="/pendaftaran-anggota/{{ $item->id_organisasi }}">
-        <button>
-            Daftar Sekarang
-        </button>
-    </a>
-
+<div class="page-title">
+    <div>
+        <h1>Pendaftaran Anggota</h1>
+        <p class="subtitle">Pilih organisasi yang ingin Anda ikuti</p>
+    </div>
 </div>
 
-<hr>
+<section class="notice">
+    <div class="hero-icon">✓</div>
+    <div>
+        <h2>Persyaratan Pendaftaran</h2>
+        <p class="subtitle">Mahasiswa aktif, mengisi formulir lengkap, dan bersedia mengikuti kegiatan organisasi.</p>
+    </div>
+</section>
 
-@endforeach
-
-</body>
-</html>
-
+<section class="grid three">
+    @forelse($organisasi as $item)
+        <article class="tile" style="min-height:250px">
+            <div class="tile-icon">◎</div>
+            <h2>{{ $item->nama_organisasi }}</h2>
+            <p class="muted">{{ $item->visi ?? 'Organisasi mahasiswa' }}</p>
+            <a class="btn primary" href="/pendaftaran-anggota/{{ $item->id_organisasi }}">Daftar Sekarang</a>
+        </article>
+    @empty
+        <section class="card empty"><p>Belum ada organisasi.</p></section>
+    @endforelse
+</section>
 @endsection

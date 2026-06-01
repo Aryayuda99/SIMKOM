@@ -1,127 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Pendaftaran Kegiatan</title>
-</head>
-<body>
+@extends('layouts.mahasiswa')
 
-<h1>
-    {{ $kegiatan->nama_kegiatan }}
-</h1>
+@section('title', 'Formulir Pendaftaran Kegiatan')
 
-
-<p>
-    {{ $kegiatan->deskripsi }}
-</p>
-
-<p>
-    Tanggal:
-    {{ $kegiatan->tanggal_pelaksanaan }}
-</p>
-
-<p>
-    Lokasi:
-    {{ $kegiatan->lokasi }}
-</p>
-
-<p>
-    Biaya:
-    Rp {{ $kegiatan->biaya_pendaftaran }}
-</p>
-
-<hr>
-
-<form
-    action="/pendaftaran-kegiatan"
-    method="POST"
-    enctype="multipart/form-data"
->
-
+@section('content')
+<form class="card modal-page" method="POST" action="/pendaftaran-kegiatan" enctype="multipart/form-data">
     @csrf
+    <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
+    <h2>Pendaftaran Kegiatan</h2>
+    <p class="subtitle">Isi formulir di bawah untuk mendaftar ke kegiatan ini</p>
 
-    <input
-        type="hidden"
-        name="id_kegiatan"
-        value="{{ $kegiatan->id_kegiatan }}"
-    >
+    <div class="notice" style="margin-top:20px">
+        <div>
+            <h3>{{ $kegiatan->nama_kegiatan }}</h3>
+            <p class="subtitle">{{ $kegiatan->tanggal_pelaksanaan }} • {{ $kegiatan->lokasi ?? 'Lokasi belum diisi' }}</p>
+        </div>
+    </div>
 
-    <label>NIM</label>
+    <div class="field"><label>Nama Lengkap</label><input name="nama" required placeholder="Nama sesuai identitas"></div>
+    <div class="field"><label>NIM</label><input name="NIM" required placeholder="Nomor Induk Mahasiswa"></div>
+    <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@student.edu"></div>
+    <div class="field"><label>Program Studi</label><input name="program_studi" required placeholder="Pilih program studi"></div>
+    <div class="field"><label>No. WhatsApp</label><input name="no_hp" required placeholder="08xxxxxxxxxx"></div>
+    <div class="field"><label>Bukti Pembayaran</label><input type="file" name="bukti_pembayaran" required></div>
 
-    <br>
-
-    <input
-        type="text"
-        name="NIM"
-        required
-    >
-
-    <br><br>
-
-    <label>Nama</label>
-
-    <br>
-
-    <input
-        type="text"
-        name="nama"
-        required
-    >
-
-    <br><br>
-
-    <label>Program Studi</label>
-
-    <br>
-
-    <input
-        type="text"
-        name="program_studi"
-        required
-    >
-
-    <br><br>
-
-    <label>Email</label>
-
-    <br>
-
-    <input
-        type="email"
-        name="email"
-        required
-    >
-
-    <br><br>
-
-    <label>No HP</label>
-
-    <br>
-
-    <input
-        type="text"
-        name="no_hp"
-        required
-    >
-
-    <br><br>
-
-    <label>Bukti Pembayaran</label>
-
-    <br>
-
-    <input
-        type="file"
-        name="bukti_pembayaran"
-        required
-    >
-
-    <br><br>
-
-    <button type="submit">
-        Daftar Kegiatan
-    </button>
-
+    <div class="grid two">
+        <a class="btn" href="/daftar-kegiatan">Batal</a>
+        <button class="primary" type="submit">Kirim Pendaftaran</button>
+    </div>
 </form>
-
-</body>
-</html>
+@endsection

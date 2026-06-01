@@ -1,90 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Jelajahi Kegiatan</title>
-</head>
-<body>
+@extends('layouts.anggota')
 
-<h1>Jelajahi Kegiatan</h1>
+@section('title', 'Jelajahi Kegiatan')
 
-<h2>
-    Kegiatan Organisasi Saya
-</h2>
-
-@foreach($kegiatanOrganisasi as $item)
-
-<div>
-
-    <h3>
-        {{ $item->nama_kegiatan }}
-    </h3>
-
-        <p>
-        Tanggal:
-        {{ $item->tanggal_pelaksanaan }}
-    </p>
-
-    <p>
-        Lokasi:
-        {{ $item->lokasi }}
-    </p>
-
-    <a
-        href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}"
-    >
-        <button>
-            Daftar Kegiatan
-        </button>
-    </a>
-
+@section('content')
+<div class="page-title">
+    <div>
+        <h1>Jelajahi Kegiatan</h1>
+        <p class="subtitle">Temukan kegiatan organisasi dan kegiatan umum</p>
+    </div>
 </div>
 
-<hr>
+<section class="card">
+    <h2>Kegiatan Organisasi Saya</h2>
+    <div class="grid two" style="margin-top:22px">
+        @forelse($kegiatanOrganisasi as $item)
+            <article class="list-item">
+                <h3>{{ $item->nama_kegiatan }}</h3>
+                <div class="meta">
+                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
+                    <span>⌖ {{ $item->lokasi ?? '-' }}</span>
+                </div>
+                <a class="btn primary" style="margin-top:16px" href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}">Daftar Kegiatan</a>
+            </article>
+        @empty
+            <div class="empty"><p>Belum ada kegiatan organisasi.</p></div>
+        @endforelse
+    </div>
+</section>
 
-@endforeach
-
-<hr>
-
-<h2>
-    Semua Kegiatan
-</h2>
-
-@foreach($semuaKegiatan as $item)
-
-<div>
-
-    <h3>
-        {{ $item->nama_kegiatan }}
-    </h3>
-
-    <p>
-        Organisasi:
-        {{ $item->nama_organisasi }}
-    </p>
-
-    <p>
-        Tanggal:
-        {{ $item->tanggal_pelaksanaan }}
-    </p>
-
-    <p>
-        Lokasi:
-        {{ $item->lokasi }}
-    </p>
-
-    <a
-        href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}"
-    >
-        <button>
-            Daftar Kegiatan
-        </button>
-    </a>
-
-</div>
-
-<hr>
-
-@endforeach
-
-</body>
-</html>
+<section class="card">
+    <h2>Semua Kegiatan</h2>
+    <div class="grid two" style="margin-top:22px">
+        @forelse($semuaKegiatan as $item)
+            <article class="list-item">
+                <span class="badge blue">{{ $item->nama_organisasi }}</span>
+                <h3 style="margin-top:12px">{{ $item->nama_kegiatan }}</h3>
+                <div class="meta">
+                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
+                    <span>⌖ {{ $item->lokasi ?? '-' }}</span>
+                </div>
+                <a class="btn primary" style="margin-top:16px" href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}">Daftar Kegiatan</a>
+            </article>
+        @empty
+            <div class="empty"><p>Belum ada kegiatan tersedia.</p></div>
+        @endforelse
+    </div>
+</section>
+@endsection

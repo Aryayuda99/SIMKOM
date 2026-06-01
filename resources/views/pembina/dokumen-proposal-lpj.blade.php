@@ -1,53 +1,37 @@
 @extends('layouts.pembina')
 
+@section('title', 'Dokumen Proposal & LPJ')
+
 @section('content')
-
-<h1>
-    Dokumen Proposal & LPJ
-</h1>
-
-<p>
-    Unduh proposal dan LPJ organisasi
-</p>
-
-@foreach($dokumen as $item)
-
-<div>
-
-    <p>
-        {{ strtoupper($item->jenis) }}
-    </p>
-
-    <h3>
-        {{ $item->nama_dokumen }}
-    </h3>
-
-    <p>
-        Organisasi:
-        {{ $item->nama_organisasi }}
-    </p>
-
-    <p>
-        Kegiatan:
-        {{ $item->nama_kegiatan }}
-    </p>
-
-    <p>
-        Tanggal Upload:
-        {{ $item->tanggal_upload }}
-    </p>
-
-    <a
-        href="{{ asset('uploads/'.$item->file_dokumen) }}"
-        target="_blank"
-    >
-        Download
-    </a>
-
+<div class="page-title">
+    <div>
+        <h1>Dokumen Proposal & LPJ</h1>
+        <p class="subtitle">Unduh proposal dan LPJ organisasi</p>
+    </div>
 </div>
 
-<hr>
-
-@endforeach
-
+<section class="card">
+    <h2>Daftar Dokumen</h2>
+    <p class="subtitle">Proposal dan LPJ yang tersedia untuk diunduh</p>
+    <div class="list" style="margin-top:24px">
+        @forelse($dokumen as $item)
+            <article class="list-item split">
+                <div>
+                    <div class="actions">
+                        <span class="badge">{{ $item->jenis }}</span>
+                        <span class="badge blue">{{ $item->nama_organisasi }}</span>
+                    </div>
+                    <h2 style="margin-top:12px">{{ $item->nama_dokumen }}</h2>
+                    <div class="meta">
+                        <span>Kegiatan<br><strong>{{ $item->nama_kegiatan }}</strong></span>
+                        <span>Tanggal Upload<br><strong>{{ $item->tanggal_upload }}</strong></span>
+                    </div>
+                </div>
+                <a class="btn primary" href="/uploads/{{ $item->file_dokumen }}" target="_blank">Download</a>
+            </article>
+        @empty
+            <div class="empty"><p>Belum ada dokumen.</p></div>
+        @endforelse
+    </div>
+</section>
 @endsection

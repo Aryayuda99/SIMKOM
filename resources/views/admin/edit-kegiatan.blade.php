@@ -1,42 +1,25 @@
 @extends('layouts.admin')
 
+@section('title', 'Edit Kegiatan')
+
 @section('content')
-
-<h1>
-    Edit Kegiatan
-</h1>
-
-<form
-    action="/update-kegiatan-admin"
-    method="POST"
->
-
+<form class="card modal-page" method="POST" action="/update-kegiatan-admin">
     @csrf
+    <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
+    <h2>Edit Kegiatan</h2>
+    <p class="subtitle">Edit nama dan deskripsi kegiatan</p>
 
-    <input
-        type="hidden"
-        name="id_kegiatan"
-        value="{{ $kegiatan->id_kegiatan }}"
-    >
-
-    <input
-        type="text"
-        name="nama_kegiatan"
-        value="{{ $kegiatan->nama_kegiatan }}"
-    >
-
-    <br><br>
-
-    <textarea
-        name="deskripsi"
-    >{{ $kegiatan->deskripsi }}</textarea>
-
-    <br><br>
-
-    <button type="submit">
-        Simpan
-    </button>
-
+    <div class="field" style="margin-top:20px">
+        <label>Nama Kegiatan</label>
+        <input name="nama_kegiatan" value="{{ $kegiatan->nama_kegiatan }}" required>
+    </div>
+    <div class="field">
+        <label>Deskripsi Kegiatan</label>
+        <textarea name="deskripsi" required>{{ $kegiatan->deskripsi }}</textarea>
+    </div>
+    <div class="grid two">
+        <a class="btn" href="/manajemen-kegiatan-admin">Batal</a>
+        <button class="primary" type="submit">Simpan Perubahan</button>
+    </div>
 </form>
-
 @endsection

@@ -1,73 +1,32 @@
 @extends('layouts.admin')
 
+@section('title', 'Tambah Kegiatan')
+
 @section('content')
-
-<h1>
-    Tambah Kegiatan Baru
-</h1>
-
-<p>
-    Tambahkan kegiatan untuk organisasi
-</p>
-
-<form
-    action="/simpan-kegiatan"
-    method="POST"
->
-
+<form class="card modal-page" method="POST" action="/simpan-kegiatan">
     @csrf
+    <h2>Tambah Kegiatan Baru</h2>
+    <p class="subtitle">Tambahkan kegiatan untuk organisasi terpilih</p>
 
-    <label>
-        Organisasi
-    </label>
-
-    <br>
-
-    <select name="id_organisasi">
-
-        @foreach($organisasi as $item)
-
-        <option
-            value="{{ $item->id_organisasi }}"
-        >
-            {{ $item->nama_organisasi }}
-        </option>
-
-        @endforeach
-
-    </select>
-
-    <br><br>
-
-    <label>
-        Nama Kegiatan
-    </label>
-
-    <br>
-
-    <input
-        type="text"
-        name="nama_kegiatan"
-    >
-
-    <br><br>
-
-    <label>
-        Deskripsi
-    </label>
-
-    <br>
-
-    <textarea
-        name="deskripsi"
-    ></textarea>
-
-    <br><br>
-
-    <button type="submit">
-        Simpan
-    </button>
-
+    <div class="field" style="margin-top:20px">
+        <label>Organisasi</label>
+        <select name="id_organisasi" required>
+            @foreach($organisasi as $item)
+                <option value="{{ $item->id_organisasi }}">{{ $item->nama_organisasi }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="field">
+        <label>Nama Kegiatan</label>
+        <input name="nama_kegiatan" required placeholder="Contoh: Workshop UI/UX Design">
+    </div>
+    <div class="field">
+        <label>Deskripsi Kegiatan</label>
+        <textarea name="deskripsi" required placeholder="Deskripsi singkat kegiatan"></textarea>
+    </div>
+    <div class="grid two">
+        <a class="btn" href="/manajemen-kegiatan-admin">Batal</a>
+        <button class="green" type="submit">Tambah Kegiatan</button>
+    </div>
 </form>
-
 @endsection

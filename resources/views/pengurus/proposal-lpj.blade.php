@@ -1,154 +1,93 @@
 @extends('layouts.pengurus')
 
+@section('title', 'Proposal & LPJ')
+
 @section('content')
-
-<h1>
-    Proposal & LPJ
-</h1>
-
-<form
-    action="/upload-dokumen"
-    method="POST"
-    enctype="multipart/form-data"
->
-
-    @csrf
-
-    <label>
-        Kegiatan
-    </label>
-
-    <br>
-
-    <select name="id_kegiatan">
-
-        @foreach($kegiatan as $item)
-
-        <option
-            value="{{ $item->id_kegiatan }}"
-        >
-            {{ $item->nama_kegiatan }}
-        </option>
-
-        @endforeach
-
-    </select>
-
-    <br><br>
-
-    <label>
-        Nama Dokumen
-    </label>
-
-    <br>
-
-    <input
-        type="text"
-        name="nama_dokumen"
-    >
-
-    <br><br>
-
-    <label>
-        Jenis
-    </label>
-
-    <br>
-
-    <select name="jenis">
-
-        <option value="proposal">
-            Proposal
-        </option>
-
-        <option value="lpj">
-            LPJ
-        </option>
-
-        <option value="dokumentasi">
-            Dokumentasi
-        </option>
-
-    </select>
-
-    <br><br>
-
-    <label>
-        Deskripsi
-    </label>
-
-    <br>
-
-    <input
-        type="text"
-        name="deskripsi"
-    >
-
-    <br><br>
-
-    <input
-        type="file"
-        name="file_dokumen"
-    >
-
-    <br><br>
-
-    <button type="submit">
-        Upload
-    </button>
-
-</form>
-
-<hr>
-
-<h2>
-    Daftar Dokumen
-</h2>
-
-@foreach($dokumen as $item)
-
-<div>
-
-    <h3>
-        {{ $item->nama_dokumen }}
-    </h3>
-
-    <p>
-        {{ $item->nama_kegiatan }}
-    </p>
-
-    <p>
-        {{ $item->jenis }}
-    </p>
-
-    <p>
-        {{ $item->tanggal_upload }}
-    </p>
-
-    <a
-        href="{{ asset('uploads/'.$item->file_dokumen) }}"
-        target="_blank"
-    >
-        Download
-    </a>
-
-    |
-
-    <a
-    href="/hapus-dokumen/{{ $item->id_dokumen }}"
-    onclick="
-        return confirm(
-            'Yakin ingin menghapus dokumen ini?'
-        )
-    "
->
-    Hapus
-</a>
-
+<div class="page-title">
+    <div>
+        <h1>Proposal & LPJ</h1>
+        <p class="subtitle">Kelola dokumen proposal dan laporan pertanggungjawaban</p>
+    </div>
 </div>
 
-<hr>
+<section class="card">
+    <h2>Pusat Dokumen</h2>
+    <p class="subtitle">Upload dan kelola dokumen kegiatan</p>
 
-@endforeach
+    <form method="POST" action="/upload-dokumen" enctype="multipart/form-data">
+        @csrf
+        <div class="form-grid" style="margin-top:22px">
+            <div class="field">
+                <label>Kegiatan</label>
+                <select name="id_kegiatan" required>
+                    @foreach($kegiatan as $item)
+                        <option value="{{ $item->id_kegiatan }}">{{ $item->nama_kegiatan }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="field">
+                <label>Jenis Dokumen</label>
+                <select name="jenis" required>
+                    <option value="Proposal">Proposal</option>
+                    <option value="LPJ">LPJ</option>
+                    <option value="Dokumentasi">Dokumentasi</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Nama Dokumen</label>
+                <input name="nama_dokumen" required placeholder="Nama dokumen">
+            </div>
+            <div class="field">
+                <label>Deskripsi</label>
+                <input name="deskripsi" placeholder="Deskripsi singkat">
+            </div>
+        </div>
+        <label>Upload File</label>
+        <div class="upload">
+            <div>
+                <strong>Pilih file dokumen</strong>
+                <p>PDF, DOCX, JPG, PNG, ZIP</p>
+                <input type="file" name="file_dokumen" required style="margin-top:12px">
+            </div>
+        </div>
+        <button class="primary" type="submit">Upload Dokumen</button>
+    </form>
+</section>
 
+<section class="card">
+    <h2>Daftar Dokumen</h2>
+    <div class="list" style="margin-top:20px">
+        @forelse($dokumen as $item)
+            <div class="list-item">
+                <div class="split">
+                    <div>
+                        <div class="actions">
+                            <span class="badge">{{ $item->jenis }}</span>
+                            <span class="badge blue">{{ $item->nama_kegiatan }}</span>
+                        </div>
+                        <h3 style="margin-top:10px">{{ $item->nama_dokumen }}</h3>
+                    </div>
+                    <div class="actions">
+                        <a class="btn" href="/uploads/{{ $item->file_dokumen }}" target="_blank">Download</a>
+                        <a class="btn danger" href="/hapus-dokumen/{{ $item->id_dokumen }}" onclick="return confirm('Hapus dokumen ini?')">Hapus</a>
+                    </div>
+                </div>
+                <div class="meta">
+                    <span>Tanggal Upload {{ $item->tanggal_upload }}</span>
+                    <span>{{ $item->deskripsi }}</span>
+                </div>
+            </div>
+        @empty
+            <div class="empty"><p>Belum ada dokumen.</p></div>
+        @endforelse
+    </div>
+</section>
+
+<section class="notice">
+    <div class="hero-icon">▧</div>
+    <div>
+        <h2>Informasi Upload Dokumen</h2>
+        <p class="subtitle">Format proposal dan LPJ: PDF atau DOCX. Format dokumentasi: JPG, PNG, atau ZIP.</p>
+    </div>
+</section>
 @endsection

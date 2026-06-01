@@ -1,91 +1,43 @@
 @extends('layouts.pembina')
 
+@section('title', 'Dashboard Monitoring')
+
 @section('content')
+<div class="page-title">
+    <div>
+        <h1>Dashboard Monitoring</h1>
+        <p class="subtitle">Sistem monitoring kegiatan organisasi mahasiswa</p>
+    </div>
+</div>
 
-<h1>
-    Dashboard Monitoring
-</h1>
+<section class="grid two">
+    <div class="card stat">
+        <div><p class="muted">Organisasi Binaan</p><div class="stat-value">{{ $organisasi->nama_organisasi ?? '-' }}</div></div>
+        <div class="tile-icon">▤</div>
+    </div>
+    <div class="card stat">
+        <div><p class="muted">Dokumen Tersedia</p><div class="stat-value">{{ $jumlahDokumen }}</div></div>
+        <div class="tile-icon">✓</div>
+    </div>
+</section>
 
-<p>
-    Organisasi yang dibina
-</p>
-
-<hr>
-
-<h2>
-    {{ $organisasi->nama_organisasi }}
-</h2>
-
-<br>
-
-<table border="1" cellpadding="15">
-
-    <tr>
-
-        <td>
-
-            <b>
-                Jumlah Kegiatan
-            </b>
-
-            <br>
-
-            {{ $jumlahKegiatan }}
-
-        </td>
-
-        <td>
-
-            <b>
-                Jumlah Dokumen
-            </b>
-
-            <br>
-
-            {{ $jumlahDokumen }}
-
-        </td>
-
-    </tr>
-
-</table>
-
-<br>
-
-<h2>
-    Kegiatan Terbaru
-</h2>
-
-<table border="1" cellpadding="10">
-
-    <tr>
-
-        <th>
-            Nama Kegiatan
-        </th>
-
-        <th>
-            Tanggal
-        </th>
-
-    </tr>
-
-    @foreach($kegiatan as $item)
-
-    <tr>
-
-        <td>
-            {{ $item->nama_kegiatan }}
-        </td>
-
-        <td>
-            {{ $item->tanggal_pelaksanaan }}
-        </td>
-
-    </tr>
-
-    @endforeach
-
-</table>
-
+<section class="card">
+    <h2>Kegiatan yang terbaru</h2>
+    <p class="subtitle">Status kegiatan aktif dari organisasi binaan</p>
+    <div class="list" style="margin-top:24px">
+        @forelse($kegiatan as $item)
+            <article class="list-item">
+                <span class="badge green">{{ $organisasi->nama_organisasi ?? 'Organisasi' }}</span>
+                <h2 style="margin-top:12px">{{ $item->nama_kegiatan }}</h2>
+                <div class="meta">
+                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
+                    <span>⌖ {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
+                    <span>◎ {{ $item->kuota_peserta ?? 0 }} peserta</span>
+                </div>
+            </article>
+        @empty
+            <div class="empty"><p>Belum ada kegiatan untuk dimonitor.</p></div>
+        @endforelse
+    </div>
+</section>
 @endsection
