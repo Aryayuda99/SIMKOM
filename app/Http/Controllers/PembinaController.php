@@ -6,42 +6,64 @@ use Illuminate\Support\Facades\DB;
 
 class PembinaController extends Controller
 {
-    public function dashboard()
-    {
-        $pembina = DB::table('pembina')
-            ->where(
-                'id_user',
-                session('id_user')
-            )
-            ->first();
+public function dashboard()
+{
+    $pembina = DB::table('pembina')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->first();
 
-        $organisasi = DB::table('data_organisasi')
-            ->where(
-                'id_organisasi',
-                $pembina->id_organisasi
-            )
-            ->first();
+    $organisasi = DB::table('data_organisasi')
+        ->where(
+            'id_organisasi',
+            $pembina->id_organisasi
+        )
+        ->first();
 
-        $kegiatan = DB::table('kegiatan')
-            ->where(
-                'id_organisasi',
-                $pembina->id_organisasi
-            )
-            ->orderBy(
-                'tanggal_pelaksanaan',
-                'asc'
-            )
-            ->get();
+    $jumlahKegiatan = DB::table('kegiatan')
+        ->where(
+            'id_organisasi',
+            $pembina->id_organisasi
+        )
+        ->count();
 
-        return view(
-            'pembina.dashboard',
-            compact(
-                'pembina',
-                'organisasi',
-                'kegiatan'
-            )
-        );
-    }
+    $jumlahDokumen = DB::table('dokumen_kegiatan')
+        ->join(
+            'kegiatan',
+            'dokumen_kegiatan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
+        ->where(
+            'kegiatan.id_organisasi',
+            $pembina->id_organisasi
+        )
+        ->count();
+
+    $kegiatan = DB::table('kegiatan')
+    ->where(
+        'id_organisasi',
+        $pembina->id_organisasi
+    )
+    ->orderBy(
+        'tanggal_pelaksanaan',
+        'desc'
+    )
+    ->limit(5)
+    ->get();
+
+    return view(
+        'pembina.dashboard',
+        compact(
+            'organisasi',
+            'jumlahKegiatan',
+            'jumlahDokumen',
+            'kegiatan'
+        )
+    );
+}
 
     public function dokumenProposalLpj()
 {

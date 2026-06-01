@@ -271,4 +271,41 @@ public function hapusKegiatan($id)
         '/manajemen-kegiatan-admin'
     );
 }
+
+public function formResetPassword($id)
+{
+    $user = DB::table('users')
+        ->where(
+            'id_user',
+            $id
+        )
+        ->first();
+
+    return view(
+        'admin.reset-password',
+        compact('user')
+    );
+}
+
+public function simpanPassword(Request $request)
+{
+    DB::table('users')
+        ->where(
+            'id_user',
+            $request->id_user
+        )
+        ->update([
+
+            'password'
+                => $request->password
+
+        ]);
+
+    return redirect(
+        '/manajemen-anggota'
+    )->with(
+        'success',
+        'Password berhasil direset'
+    );
+}
 }

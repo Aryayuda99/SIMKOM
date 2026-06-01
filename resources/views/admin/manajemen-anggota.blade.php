@@ -100,6 +100,12 @@
 
             |
 
+    <a href="/reset-password/{{ $item->id_user }}">
+        Reset Password
+    </a>
+
+            |
+
             <a
                 href="/nonaktifkan-anggota/{{ $item->id_user }}"
             >

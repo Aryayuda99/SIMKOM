@@ -197,7 +197,7 @@ Route::get(
 
 //=====================PEMBINA============================
 Route::get(
-    '/pembina/dashboard',
+    '/dashboard-pembina',
     [PembinaController::class, 'dashboard']
 );
 
@@ -275,4 +275,14 @@ Route::post(
 Route::get(
     '/hapus-kegiatan/{id}',
     [AdminController::class, 'hapusKegiatan']
+);
+
+Route::get(
+    '/reset-password/{id}',
+    [AdminController::class, 'formResetPassword']
+);
+
+Route::post(
+    '/simpan-password',
+    [AdminController::class, 'simpanPassword']
 );

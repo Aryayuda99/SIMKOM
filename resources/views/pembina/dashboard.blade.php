@@ -7,32 +7,85 @@
 </h1>
 
 <p>
-    Organisasi:
-    {{ $organisasi->nama_organisasi }}
+    Organisasi yang dibina
 </p>
 
 <hr>
 
-@foreach($kegiatan as $item)
+<h2>
+    {{ $organisasi->nama_organisasi }}
+</h2>
 
-<div>
+<br>
 
-    <h3>
-        {{ $item->nama_kegiatan }}
-    </h3>
+<table border="1" cellpadding="15">
 
-    <p>
-        {{ $item->tanggal_pelaksanaan }}
-    </p>
+    <tr>
 
-    <p>
-        {{ $item->lokasi }}
-    </p>
+        <td>
 
-</div>
+            <b>
+                Jumlah Kegiatan
+            </b>
 
-<hr>
+            <br>
 
-@endforeach
+            {{ $jumlahKegiatan }}
+
+        </td>
+
+        <td>
+
+            <b>
+                Jumlah Dokumen
+            </b>
+
+            <br>
+
+            {{ $jumlahDokumen }}
+
+        </td>
+
+    </tr>
+
+</table>
+
+<br>
+
+<h2>
+    Kegiatan Terbaru
+</h2>
+
+<table border="1" cellpadding="10">
+
+    <tr>
+
+        <th>
+            Nama Kegiatan
+        </th>
+
+        <th>
+            Tanggal
+        </th>
+
+    </tr>
+
+    @foreach($kegiatan as $item)
+
+    <tr>
+
+        <td>
+            {{ $item->nama_kegiatan }}
+        </td>
+
+        <td>
+            {{ $item->tanggal_pelaksanaan }}
+        </td>
+
+    </tr>
+
+    @endforeach
+
+</table>
 
 @endsection
