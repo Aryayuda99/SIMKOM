@@ -5,11 +5,11 @@
 @section('content')
 <section class="hero solid">
     <div>
-        <h1>Selamat Datang di SIMKOM</h1>
+        <h1><b>Selamat Datang di SIMKOM</b></h1>
         <p class="subtitle" style="color:#dbeafe">Platform terpadu untuk bergabung dengan organisasi mahasiswa dan mengikuti berbagai kegiatan menarik</p>
         <div class="actions" style="margin-top:24px">
-            <a class="btn" href="/daftar-anggota">Daftar Jadi Anggota</a>
-            <a class="btn" href="/daftar-kegiatan">Lihat Kegiatan</a>
+            <a class="btn primary" href="/daftar-anggota">Daftar Jadi Anggota</a>
+            <a class="btn primary" href="/daftar-kegiatan">Lihat Kegiatan</a>
         </div>
     </div>
 </section>

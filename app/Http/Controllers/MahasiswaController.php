@@ -162,6 +162,12 @@ public function simpanPendaftaranKegiatan(Request $request)
 public function daftarKegiatan()
 {
     $kegiatan = DB::table('kegiatan')
+        ->leftJoin(
+            'pendaftaran_kegiatan',
+            'kegiatan.id_kegiatan',
+            '=',
+            'pendaftaran_kegiatan.id_kegiatan'
+        )
         ->join(
             'data_organisasi',
             'kegiatan.id_organisasi',
@@ -170,6 +176,18 @@ public function daftarKegiatan()
         )
         ->select(
             'kegiatan.*',
+            'data_organisasi.nama_organisasi',
+            DB::raw('COUNT(pendaftaran_kegiatan.id_pendaftaran) as jumlah_peserta')
+        )
+        ->groupBy(
+            'kegiatan.id_kegiatan',
+            'kegiatan.id_organisasi',
+            'kegiatan.nama_kegiatan',
+            'kegiatan.tanggal_pelaksanaan',
+            'kegiatan.kuota_peserta',
+            'kegiatan.deskripsi',
+            'kegiatan.lokasi',
+            'kegiatan.biaya_pendaftaran',
             'data_organisasi.nama_organisasi'
         )
         ->get();
