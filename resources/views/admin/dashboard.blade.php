@@ -22,8 +22,8 @@
     <a class="tile" href="/profil-organisasi-admin">
         <div class="tile-icon">▤</div>
         <div>
-            <h3>Profil Organisasi</h3>
-            <p class="muted">Kelola visi dan misi organisasi mahasiswa</p>
+            <h3>Manajemen Data Organisasi</h3>
+            <p class="muted">Kelola data organisasi mahasiswa</p>
         </div>
     </a>
     <a class="tile" href="/manajemen-anggota-admin">
@@ -45,7 +45,7 @@
 <section class="card">
     <h2>Fitur Admin</h2>
     <div class="grid two" style="margin-top:16px">
-        <p><span class="blue">•</span> <strong>Profil Organisasi:</strong> edit identitas, periode, visi, dan misi organisasi.</p>
+        <p><span class="blue">•</span> <strong>Manajemen Data Organisasi:</strong> tambah, hapus, edit identitas, periode, visi, dan misi organisasi.</p>
         <p><span class="blue">•</span> <strong>Manajemen Anggota:</strong> pilih organisasi, atur role, dan reset password.</p>
         <p><span class="blue">•</span> <strong>Manajemen Kegiatan:</strong> tambah dan edit kegiatan per organisasi.</p>
     </div>

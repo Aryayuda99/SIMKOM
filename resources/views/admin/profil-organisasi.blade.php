@@ -5,9 +5,10 @@
 @section('content')
 <div class="page-title">
     <div>
-        <h1>Profil Organisasi</h1>
-        <p class="subtitle">Informasi dan identitas seluruh organisasi</p>
+        <h1>Manajemen Organisasi</h1>
+        <p class="subtitle">Kelola informasi dan identitas seluruh Organisasi</p>
     </div>
+    <a class="btn green" href="/tambah-ukm">+ Tambah UKM</a>
 </div>
 
 <div class="grid two">
@@ -21,7 +22,10 @@
                         <p class="muted">{{ $item->periode_kepengurusan ?? 'Periode belum diisi' }}</p>
                     </div>
                 </div>
-                <a class="btn primary" href="/edit-organisasi/{{ $item->id_organisasi }}">Edit Profil</a>
+                <div class="actions">
+                    <a class="btn primary" href="/edit-organisasi/{{ $item->id_organisasi }}">Edit Profil</a>
+                    <a class="btn danger" href="/hapus-organisasi/{{ $item->id_organisasi }}" onclick="return confirm('Hapus organisasi ini beserta anggota, kegiatan, dokumen, dan transaksi terkait?')">Hapus</a>
+                </div>
             </div>
             <div style="margin-top:24px">
                 <h3>Visi</h3>

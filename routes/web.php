@@ -275,8 +275,23 @@ Route::get(
 );
 
 Route::get(
+    '/tambah-ukm',
+    [AdminController::class, 'formTambahOrganisasi']
+);
+
+Route::post(
+    '/simpan-ukm',
+    [AdminController::class, 'simpanOrganisasi']
+);
+
+Route::get(
     '/edit-organisasi/{id}',
     [AdminController::class, 'formEditOrganisasi']
+);
+
+Route::get(
+    '/hapus-organisasi/{id}',
+    [AdminController::class, 'hapusOrganisasi']
 );
 
 Route::post(

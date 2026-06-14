@@ -31,20 +31,20 @@
     <div class="form-grid">
         <div class="field">
             <label>Nama Organisasi</label>
-            <input name="nama_organisasi" value="{{ $organisasi->nama_organisasi }}">
+            <input name="nama_organisasi" value="{{ $organisasi->nama_organisasi }}" required>
         </div>
         <div class="field">
             <label>Periode Kepengurusan</label>
-            <input name="periode_kepengurusan" value="{{ $organisasi->periode_kepengurusan }}">
+            <input name="periode_kepengurusan" value="{{ $organisasi->periode_kepengurusan }}" required>
         </div>
     </div>
     <div class="field">
         <label>Visi</label>
-        <textarea name="visi">{{ $organisasi->visi }}</textarea>
+        <textarea name="visi" required>{{ $organisasi->visi }}</textarea>
     </div>
     <div class="field">
         <label>Misi</label>
-        <textarea name="misi">{{ $organisasi->misi }}</textarea>
+        <textarea name="misi" required>{{ $organisasi->misi }}</textarea>
     </div>
 </form>
 @endsection

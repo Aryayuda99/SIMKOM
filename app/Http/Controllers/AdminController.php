@@ -41,8 +41,84 @@ public function formEditOrganisasi($id)
     );
 }
 
+public function formTambahOrganisasi()
+{
+    return view('admin.tambah-ukm');
+}
+
+public function simpanOrganisasi(Request $request)
+{
+    $request->validate([
+        'nama_organisasi' => 'required',
+        'periode_kepengurusan' => 'required',
+        'visi' => 'required',
+        'misi' => 'required'
+    ]);
+
+    $organisasi = DB::table(
+        'data_organisasi'
+    )->select('id_organisasi')->get();
+
+    $nomorTerbesar = 0;
+
+    foreach ($organisasi as $item) {
+        $nomor = (int) preg_replace(
+            '/\D/',
+            '',
+            $item->id_organisasi
+        );
+
+        if ($nomor > $nomorTerbesar) {
+            $nomorTerbesar = $nomor;
+        }
+    }
+
+    $idBaru =
+        'O' .
+        str_pad(
+            $nomorTerbesar + 1,
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
+
+    DB::table('data_organisasi')
+        ->insert([
+
+            'id_organisasi'
+                => $idBaru,
+
+            'nama_organisasi'
+                => $request->nama_organisasi,
+
+            'periode_kepengurusan'
+                => $request->periode_kepengurusan,
+
+            'visi'
+                => $request->visi,
+
+            'misi'
+                => $request->misi
+
+        ]);
+
+    return redirect(
+        '/profil-organisasi-admin'
+    )->with(
+        'success',
+        'UKM berhasil ditambahkan'
+    );
+}
+
 public function updateOrganisasi(Request $request)
 {
+    $request->validate([
+        'nama_organisasi' => 'required',
+        'periode_kepengurusan' => 'required',
+        'visi' => 'required',
+        'misi' => 'required'
+    ]);
+
     DB::table('data_organisasi')
         ->where(
             'id_organisasi',
@@ -66,6 +142,92 @@ public function updateOrganisasi(Request $request)
 
     return redirect(
         '/profil-organisasi-admin'
+    );
+}
+
+public function hapusOrganisasi($id)
+{
+    DB::transaction(function () use ($id) {
+        $kegiatanIds = DB::table('kegiatan')
+            ->where('id_organisasi', $id)
+            ->pluck('id_kegiatan');
+
+        $userIds = collect()
+            ->merge(
+                DB::table('anggota')
+                    ->where('id_organisasi', $id)
+                    ->pluck('id_user')
+            )
+            ->merge(
+                DB::table('pengurus')
+                    ->where('id_organisasi', $id)
+                    ->pluck('id_user')
+            )
+            ->merge(
+                DB::table('pembina')
+                    ->where('id_organisasi', $id)
+                    ->pluck('id_user')
+            )
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($kegiatanIds->isNotEmpty()) {
+            DB::table('keuangan')
+                ->whereIn('id_kegiatan', $kegiatanIds)
+                ->delete();
+
+            DB::table('dokumen_kegiatan')
+                ->whereIn('id_kegiatan', $kegiatanIds)
+                ->delete();
+
+            DB::table('pendaftaran_kegiatan')
+                ->whereIn('id_kegiatan', $kegiatanIds)
+                ->delete();
+
+            DB::table('riwayat_kegiatan')
+                ->whereIn('id_kegiatan', $kegiatanIds)
+                ->delete();
+        }
+
+        DB::table('kegiatan')
+            ->where('id_organisasi', $id)
+            ->delete();
+
+        DB::table('pendaftaran_anggota_online')
+            ->where('id_organisasi', $id)
+            ->delete();
+
+        DB::table('anggota')
+            ->where('id_organisasi', $id)
+            ->delete();
+
+        DB::table('pengurus')
+            ->where('id_organisasi', $id)
+            ->delete();
+
+        DB::table('pembina')
+            ->where('id_organisasi', $id)
+            ->delete();
+
+        if ($userIds->isNotEmpty()) {
+            DB::table('users')
+                ->whereIn('id_user', $userIds)
+                ->update([
+                    'role' => 'mahasiswa'
+                ]);
+        }
+
+        DB::table('data_organisasi')
+            ->where('id_organisasi', $id)
+            ->delete();
+    });
+
+    return redirect(
+        '/profil-organisasi-admin'
+    )->with(
+        'success',
+        'Organisasi berhasil dihapus'
     );
 }
 
