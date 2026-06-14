@@ -54,21 +54,54 @@ public function dashboard()
 
 public function jelajahiKegiatan()
 {
-    $kegiatanOrganisasi = DB::table('kegiatan')
+$kegiatanOrganisasi = DB::table('kegiatan')
+    ->leftJoin(
+        'pendaftaran_kegiatan',
+        'kegiatan.id_kegiatan',
+        '=',
+        'pendaftaran_kegiatan.id_kegiatan'
+    )
     ->join(
         'anggota',
         'kegiatan.id_organisasi',
         '=',
         'anggota.id_organisasi'
     )
+    ->join(
+        'data_organisasi',
+        'kegiatan.id_organisasi',
+        '=',
+        'data_organisasi.id_organisasi'
+    )
     ->where(
         'anggota.id_user',
         session('id_user')
     )
-    ->select('kegiatan.*')
+    ->select(
+        'kegiatan.*',
+        'data_organisasi.nama_organisasi',
+        DB::raw('COUNT(pendaftaran_kegiatan.id_pendaftaran) as jumlah_peserta')
+    )
+    ->groupBy(
+        'kegiatan.id_kegiatan',
+        'kegiatan.id_organisasi',
+        'kegiatan.nama_kegiatan',
+        'kegiatan.tanggal_pelaksanaan',
+        'kegiatan.kuota_peserta',
+        'kegiatan.deskripsi',
+        'kegiatan.lokasi',
+        'kegiatan.biaya_pendaftaran',
+        'data_organisasi.nama_organisasi'
+    )
     ->get();
 
     $semuaKegiatan = DB::table('kegiatan')
+        ->leftJoin(
+            'pendaftaran_kegiatan',
+            'kegiatan.id_kegiatan',
+            '=',
+            'pendaftaran_kegiatan.id_kegiatan'
+        )
         ->join(
             'data_organisasi',
             'kegiatan.id_organisasi',
@@ -77,6 +110,18 @@ public function jelajahiKegiatan()
         )
         ->select(
             'kegiatan.*',
+            'data_organisasi.nama_organisasi',
+            DB::raw('COUNT(pendaftaran_kegiatan.id_pendaftaran) as jumlah_peserta')
+        )
+        ->groupBy(
+            'kegiatan.id_kegiatan',
+            'kegiatan.id_organisasi',
+            'kegiatan.nama_kegiatan',
+            'kegiatan.tanggal_pelaksanaan',
+            'kegiatan.kuota_peserta',
+            'kegiatan.deskripsi',
+            'kegiatan.lokasi',
+            'kegiatan.biaya_pendaftaran',
             'data_organisasi.nama_organisasi'
         )
         ->get();

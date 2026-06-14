@@ -91,9 +91,23 @@ DB::table('pendaftaran_anggota_online')
 
 public function formPendaftaranKegiatan($id)
 {
+    if (session('role') === 'pengurus') {
+        return redirect('/manajemen-kegiatan')
+            ->with('success', 'Pengurus tidak dapat mendaftar kegiatan');
+    }
+
     $kegiatan = DB::table('kegiatan')
         ->where('id_kegiatan', $id)
         ->first();
+
+    $jumlahPeserta = DB::table('pendaftaran_kegiatan')
+        ->where('id_kegiatan', $id)
+        ->count();
+
+    if (!$kegiatan || (int) $kegiatan->kuota_peserta <= $jumlahPeserta) {
+        return redirect('/daftar-kegiatan')
+            ->with('success', 'Slot kegiatan sudah penuh');
+    }
 
     return view(
         'mahasiswa.form-pendaftaran-kegiatan',
@@ -103,6 +117,24 @@ public function formPendaftaranKegiatan($id)
 
 public function simpanPendaftaranKegiatan(Request $request)
 {
+    if (session('role') === 'pengurus') {
+        return redirect('/manajemen-kegiatan')
+            ->with('success', 'Pengurus tidak dapat mendaftar kegiatan');
+    }
+
+    $kegiatan = DB::table('kegiatan')
+        ->where('id_kegiatan', $request->id_kegiatan)
+        ->first();
+
+    $jumlahPesertaKegiatan = DB::table('pendaftaran_kegiatan')
+        ->where('id_kegiatan', $request->id_kegiatan)
+        ->count();
+
+    if (!$kegiatan || (int) $kegiatan->kuota_peserta <= $jumlahPesertaKegiatan) {
+        return redirect('/daftar-kegiatan')
+            ->with('success', 'Slot kegiatan sudah penuh');
+    }
+
     $file = $request->file('bukti_pembayaran');
 
     $namaFile = time() .

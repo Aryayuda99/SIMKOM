@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login SIMKOM')
+@section('title', 'Hubungi Admin SIMKOM')
 
 @section('content')
 <style>
@@ -113,78 +113,31 @@
         font-size: 12px;
     }
 
-    .login-field {
+    .contact-field {
         margin-bottom: 14px;
     }
 
-    .login-field label {
+    .contact-field label {
         display: block;
         margin-bottom: 7px;
         font-size: 11px;
         font-weight: 700;
     }
 
-    .login-field input {
-        width: 100%;
+    .contact-value {
         min-height: 34px;
-        border: 0;
         border-radius: 7px;
         padding: 9px 11px;
-        font: inherit;
         font-size: 12px;
         background: #f0f0f3;
         box-sizing: border-box;
-    }
-
-    .password-field {
-        position: relative;
-    }
-
-    .password-field input {
-        padding-right: 36px;
-    }
-
-    .password-field span {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        color: #374151;
-        font-size: 12px;
-    }
-
-    .login-options {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin: 4px 0 14px;
-        font-size: 11px;
-    }
-
-    .login-options label {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin: 0;
-        color: #374151;
-        font-weight: 400;
-    }
-
-    .login-options input {
-        width: 12px;
-        height: 12px;
-        min-height: 12px;
-        padding: 0;
-    }
-
-    .login-options a {
-        color: #2563eb;
-        font-weight: 600;
-        text-decoration: none;
+        color: #4b5563;
+        cursor: pointer;
     }
 
     .login-submit {
+        display: inline-grid;
+        place-items: center;
         width: 100%;
         min-height: 36px;
         border: 1px solid #2563eb;
@@ -193,6 +146,7 @@
         color: #fff;
         font: inherit;
         font-size: 12px;
+        text-decoration: none;
         cursor: pointer;
     }
 
@@ -210,18 +164,6 @@
 </style>
 
 <main class="login-screen">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Login Gagal',
-                text: '{{ session("error") }}',
-                confirmButtonColor: '#2563eb'
-            });
-        </script>
-@endif
     <section class="login-info">
         <div class="login-logo">S</div>
         <h1>SIMKOM</h1>
@@ -253,45 +195,20 @@
     </section>
 
     <section class="login-panel">
-        <h2>Selamat Datang</h2>
-        <p>Masukkan identitas Anda untuk mengakses SIMKOM</p>
+        <h2>Hubungi Admin</h2>
+        <p>Dapatkan kembali password anda</p>
 
-        <form method="POST" action="/login">
-            @csrf
+        <div class="contact-field">
+            <label>Email</label>
+            <div class="contact-value">admin@gmail.com</div>
+        </div>
 
-            <div class="login-field">
-                <label>Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="nama@simkom.ac.id"
-                    value="{{ old('email', request()->cookie('simkom_remember_email')) }}"
-                    required
-                >
-            </div>
+        <div class="contact-field">
+            <label>WhatsApp</label>
+            <div class="contact-value">081xxxxxxx</div>
+        </div>
 
-            <div class="login-field">
-                <label>Password</label>
-                <div class="password-field">
-                    <input type="password" name="password" placeholder="Masukkan password" required>
-                    <span>◎</span>
-                </div>
-            </div>
-
-            <div class="login-options">
-                <label>
-                    <input
-                        type="checkbox"
-                        name="remember"
-                        {{ old('remember') || request()->cookie('simkom_remember_email') ? 'checked' : '' }}
-                    >
-                    <span>Ingat saya</span>
-                </label>
-                <a href="/lupa-password">Lupa password?</a>
-            </div>
-
-            <button class="login-submit" type="submit">Login</button>
-        </form>
+        <a class="login-submit" href="/">Kembali</a>
     </section>
 </main>
 @endsection

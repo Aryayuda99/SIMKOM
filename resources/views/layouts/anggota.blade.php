@@ -23,15 +23,21 @@
             <a class="{{ request()->is('anggota/profil') ? 'active' : '' }}" href="/anggota/profil"><span>◎</span>Profil Saya</a>
         </nav>
         <div class="sidebar-footer">
-            <div class="avatar">AH</div>
-            <div><strong>Ahmad Fauzi</strong><span>Anggota HIMATIF</span></div>
+            <a href="/logout" class="logout">&#8617; Logout</a>
         </div>
     </aside>
 
     <main class="main">
         <header class="topbar">
-            <div class="user-chip"><b>AH</b><div><strong>Ahmad Fauzi</strong><span>Anggota</span></div></div>
-        </header>
+        <div class="user-chip">
+    <b>{{ strtoupper(substr(session('nama') ?? 'U', 0, 2)) }}</b>
+
+    <div>
+        <strong>{{ session('nama') }}</strong>
+        <span>{{ ucfirst(session('role')) }}</span>
+    </div>
+</div>    
+    </header>
         <section class="content">
             @if(session('success'))
                 <div class="toast">{{ session('success') }}</div>

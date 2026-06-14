@@ -19,11 +19,11 @@
 
         <nav class="nav">
             <a class="{{ request()->is('dashboard-pengurus') ? 'active' : '' }}" href="/dashboard-pengurus"><span>▦</span>Dashboard</a>
-            <a class="{{ request()->is('profil-organisasi') ? 'active' : '' }}" href="/profil-organisasi"><span>▤</span>Profil Organisasi</a>
+            <a class="{{ request()->is('profil-organisasi') || request()->is('edit-profil-organisasi') ? 'active' : '' }}" href="/profil-organisasi"><span>▤</span>Profil Organisasi</a>
             <a class="{{ request()->is('manajemen-anggota') ? 'active' : '' }}" href="/manajemen-anggota"><span>◎</span>Manajemen Anggota</a>
             <div class="nav-group">
                 <span class="nav-title">▣ Kegiatan</span>
-                <a class="{{ request()->is('manajemen-kegiatan') || request()->is('edit-kegiatan/*') ? 'active' : '' }}" href="/manajemen-kegiatan">Manajemen Kegiatan</a>
+                <a class="{{ request()->is('manajemen-kegiatan') || request()->is('detail-kegiatan/*') || request()->is('edit-kegiatan/*') ? 'active' : '' }}" href="/manajemen-kegiatan">Manajemen Kegiatan</a>
                 <a class="{{ request()->is('riwayat-kegiatan') ? 'active' : '' }}" href="/riwayat-kegiatan">Riwayat Kegiatan</a>
             </div>
             <a class="{{ request()->is('proposal-lpj') ? 'active' : '' }}" href="/proposal-lpj"><span>▧</span>Proposal & LPJ</a>
@@ -32,8 +32,7 @@
         </nav>
 
         <div class="sidebar-footer">
-            <div class="avatar">PO</div>
-            <div><strong>Pengurus Organisasi</strong><span>HIMATIF</span></div>
+            <a href="/logout" class="logout">&#8617; Logout</a>
         </div>
     </aside>
 

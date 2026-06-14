@@ -10,39 +10,40 @@
     </div>
 </div>
 
+<section class="notice">
+    <div class="hero-icon">Info</div>
+    <div>
+        <h2>Informasi Kegiatan</h2>
+        <p class="subtitle">
+            Jelajahi berbagai kegiatan organisasi mahasiswa dan daftarkan diri Anda secara online.
+        </p>
+    </div>
+</section>
+
 <section class="card">
     <h2>Kegiatan Organisasi Saya</h2>
+
     <div class="grid two" style="margin-top:22px">
         @forelse($kegiatanOrganisasi as $item)
-            <article class="list-item">
-                <h3>{{ $item->nama_kegiatan }}</h3>
-                <div class="meta">
-                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
-                    <span>⌖ {{ $item->lokasi ?? '-' }}</span>
-                </div>
-                <a class="btn primary" style="margin-top:16px" href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}">Daftar Kegiatan</a>
-            </article>
+            @include('anggota.partials.kartu-kegiatan', ['item' => $item, 'label' => 'Seminar'])
         @empty
-            <div class="empty"><p>Belum ada kegiatan organisasi.</p></div>
+            <section class="card empty">
+                <p>Belum ada kegiatan organisasi.</p>
+            </section>
         @endforelse
     </div>
 </section>
 
 <section class="card">
     <h2>Semua Kegiatan</h2>
+
     <div class="grid two" style="margin-top:22px">
         @forelse($semuaKegiatan as $item)
-            <article class="list-item">
-                <span class="badge blue">{{ $item->nama_organisasi }}</span>
-                <h3 style="margin-top:12px">{{ $item->nama_kegiatan }}</h3>
-                <div class="meta">
-                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
-                    <span>⌖ {{ $item->lokasi ?? '-' }}</span>
-                </div>
-                <a class="btn primary" style="margin-top:16px" href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}">Daftar Kegiatan</a>
-            </article>
+            @include('anggota.partials.kartu-kegiatan', ['item' => $item, 'label' => $item->nama_organisasi])
         @empty
-            <div class="empty"><p>Belum ada kegiatan tersedia.</p></div>
+            <section class="card empty">
+                <p>Belum ada kegiatan tersedia.</p>
+            </section>
         @endforelse
     </div>
 </section>

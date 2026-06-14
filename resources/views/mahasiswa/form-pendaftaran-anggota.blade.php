@@ -48,7 +48,7 @@
     <div class="hero-icon">✓</div>
     <div>
         <h2>Tahapan Setelah Pendaftaran</h2>
-        <p class="subtitle">Tim akan memverifikasi data Anda, lalu menghubungi melalui email atau WhatsApp.</p>
+        <p class="subtitle">Tim akan memverifikasi data Anda, lalu menghubungi melalui email.</p>
     </div>
 </section>
 @endsection

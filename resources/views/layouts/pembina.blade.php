@@ -22,8 +22,7 @@
             <a class="{{ request()->is('riwayat-kegiatan-pembina') ? 'active' : '' }}" href="/riwayat-kegiatan-pembina"><span>↺</span>Riwayat Kegiatan</a>
         </nav>
         <div class="sidebar-footer">
-            <div class="avatar">PB</div>
-            <div><strong>Pembina</strong><span>Supervisor</span></div>
+            <a href="/logout" class="logout">&#8617; Logout</a>
         </div>
     </aside>
 

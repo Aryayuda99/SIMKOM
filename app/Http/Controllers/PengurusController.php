@@ -64,6 +64,54 @@ public function profilOrganisasi()
     );
 }
 
+public function formEditProfilOrganisasi()
+{
+    $organisasi = DB::table('pengurus')
+        ->join(
+            'data_organisasi',
+            'pengurus.id_organisasi',
+            '=',
+            'data_organisasi.id_organisasi'
+        )
+        ->where(
+            'pengurus.id_user',
+            session('id_user')
+        )
+        ->select('data_organisasi.*')
+        ->first();
+
+    return view(
+        'pengurus.edit-profil-organisasi',
+        compact('organisasi')
+    );
+}
+
+public function updateProfilOrganisasi(Request $request)
+{
+    $pengurus = DB::table('pengurus')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->first();
+
+    DB::table('data_organisasi')
+        ->where(
+            'id_organisasi',
+            $pengurus->id_organisasi
+        )
+        ->update([
+            'nama_organisasi' => $request->nama_organisasi,
+            'periode_kepengurusan' => $request->periode_kepengurusan,
+        ]);
+
+    return redirect('/profil-organisasi')
+        ->with(
+            'success',
+            'Profil organisasi berhasil diperbarui'
+        );
+}
+
 public function manajemenAnggota()
 {
     $pengurus = DB::table('pengurus')
@@ -208,6 +256,41 @@ public function nonaktifkanAnggota($id)
     );
 }
 
+public function aktifkanAnggota($id)
+{
+    $anggota = DB::table('anggota')
+        ->where(
+            'id_anggota',
+            $id
+        )
+        ->first();
+
+    DB::table('anggota')
+        ->where(
+            'id_anggota',
+            $id
+        )
+        ->update([
+            'status_keanggotaan' => 'aktif'
+        ]);
+
+    DB::table('users')
+        ->where(
+            'id_user',
+            $anggota->id_user
+        )
+        ->update([
+            'role' => 'anggota'
+        ]);
+
+    return redirect(
+        '/manajemen-anggota'
+    )->with(
+        'success',
+        'Anggota berhasil diaktifkan'
+    );
+}
+
 public function manajemenKegiatan()
 {
     $pengurus = DB::table('pengurus')
@@ -227,6 +310,104 @@ public function manajemenKegiatan()
     return view(
         'pengurus.manajemen-kegiatan',
         compact('kegiatan')
+    );
+}
+
+public function detailKegiatan($id)
+{
+    $pengurus = DB::table('pengurus')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->first();
+
+    $kegiatan = DB::table('kegiatan')
+        ->join(
+            'data_organisasi',
+            'kegiatan.id_organisasi',
+            '=',
+            'data_organisasi.id_organisasi'
+        )
+        ->where(
+            'kegiatan.id_kegiatan',
+            $id
+        )
+        ->where(
+            'kegiatan.id_organisasi',
+            $pengurus->id_organisasi
+        )
+        ->select(
+            'kegiatan.*',
+            'data_organisasi.nama_organisasi'
+        )
+        ->first();
+
+    if (!$kegiatan) {
+        abort(404);
+    }
+
+    $pendaftar = DB::table('pendaftaran_kegiatan')
+        ->where(
+            'id_kegiatan',
+            $id
+        )
+        ->get();
+
+    return view(
+        'pengurus.detail-kegiatan',
+        compact(
+            'kegiatan',
+            'pendaftar'
+        )
+    );
+}
+
+public function hapusPesertaKegiatan($id)
+{
+    $pengurus = DB::table('pengurus')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->first();
+
+    $pendaftaran = DB::table('pendaftaran_kegiatan')
+        ->join(
+            'kegiatan',
+            'pendaftaran_kegiatan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
+        ->where(
+            'pendaftaran_kegiatan.id_pendaftaran',
+            $id
+        )
+        ->where(
+            'kegiatan.id_organisasi',
+            $pengurus->id_organisasi
+        )
+        ->select(
+            'pendaftaran_kegiatan.id_kegiatan'
+        )
+        ->first();
+
+    if (!$pendaftaran) {
+        abort(404);
+    }
+
+    DB::table('pendaftaran_kegiatan')
+        ->where(
+            'id_pendaftaran',
+            $id
+        )
+        ->delete();
+
+    return redirect(
+        '/detail-kegiatan/' . $pendaftaran->id_kegiatan
+    )->with(
+        'success',
+        'Peserta berhasil dihapus'
     );
 }
 
@@ -327,8 +508,29 @@ public function selesaikanKegiatan($id)
 
         ]);
 
+    DB::table('pendaftaran_kegiatan')
+        ->where(
+            'id_kegiatan',
+            $id
+        )
+        ->delete();
+
+    DB::table('kegiatan')
+        ->where(
+            'id_kegiatan',
+            $id
+        )
+        ->update([
+            'tanggal_pelaksanaan' => '1000-01-01',
+            'lokasi' => null,
+            'kuota_peserta' => null,
+        ]);
+
     return redirect(
         '/riwayat-kegiatan'
+    )->with(
+        'success',
+        'Kegiatan berhasil diselesaikan'
     );
 }
 
@@ -464,6 +666,70 @@ public function tambahTransaksi(Request $request)
     );
 }
 
+public function hapusTransaksi($id)
+{
+    DB::table('keuangan')
+        ->where('id_transaksi', $id)
+        ->delete();
+
+    return redirect('/keuangan')
+        ->with(
+            'success',
+            'Transaksi berhasil dihapus'
+        );
+}
+
+public function editTransaksi($id)
+{
+    $transaksi = DB::table('keuangan')
+        ->where(
+            'id_transaksi',
+            $id
+        )
+        ->first();
+
+    $kegiatan = DB::table('kegiatan')
+        ->get();
+
+    return view(
+        'pengurus.edit-transaksi',
+        compact(
+            'transaksi',
+            'kegiatan'
+        )
+    );
+}
+
+public function updateTransaksi(Request $request, $id)
+{
+    DB::table('keuangan')
+        ->where(
+            'id_transaksi',
+            $id
+        )
+        ->update([
+
+            'id_kegiatan'
+                => $request->id_kegiatan,
+
+            'jenis_transaksi'
+                => $request->jenis_transaksi,
+
+            'jumlah'
+                => $request->jumlah,
+
+            'keterangan'
+                => $request->keterangan
+
+        ]);
+
+    return redirect('/keuangan')
+        ->with(
+            'success',
+            'Transaksi berhasil diperbarui'
+        );
+}
+
 public function proposalLpj()
 {
     $pengurus = DB::table('pengurus')
@@ -504,11 +770,28 @@ public function proposalLpj()
 
 public function uploadDokumen(Request $request)
 {
+
+if (in_array($request->jenis, ['Proposal', 'LPJ'])) {
+
+        $request->validate([
+            'file_dokumen' => 'required|mimes:pdf,doc,docx|max:5120'
+        ], [
+            'file_dokumen.mimes' => 'Proposal dan LPJ hanya boleh PDF atau DOCX.'
+        ]);
+
+    } elseif ($request->jenis == 'Dokumentasi') {
+
+        $request->validate([
+            'file_dokumen' => 'required|mimes:jpg,jpeg,png,zip|max:5120'
+        ], [
+            'file_dokumen.mimes' => 'Dokumentasi hanya boleh JPG, PNG, atau ZIP.'
+        ]);
+
+    }
+
     $file = $request->file('file_dokumen');
 
-    $namaFile = time() .
-        '_' .
-        $file->getClientOriginalName();
+    $namaFile = time() . '_' . $file->getClientOriginalName();
 
     $file->move(
         public_path('uploads'),
@@ -645,5 +928,13 @@ public function eksporLaporan()
         )
     );
 }
-}
 
+public function exportKegiatanPdf()
+{
+    return redirect('/ekspor-laporan')
+        ->with(
+            'success',
+            'Fitur export PDF belum dibuat'
+        );
+}
+}

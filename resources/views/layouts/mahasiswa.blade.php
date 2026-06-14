@@ -22,7 +22,7 @@
             <a class="{{ request()->is('daftar-kegiatan') || request()->is('pendaftaran-kegiatan/*') ? 'active' : '' }}" href="/daftar-kegiatan"><span>▣</span>Daftar Kegiatan</a>
         </nav>
         <div class="sidebar-footer">
-            <a href="/" class="logout">⇱ Logout</a>
+            <a href="/logout" class="logout">&#8617; Logout</a>
         </div>
     </aside>
 

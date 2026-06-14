@@ -20,9 +20,21 @@ Route::get(
     }
 );
 
+Route::get(
+    '/lupa-password',
+    function () {
+        return view('forgot-password');
+    }
+);
+
 Route::post(
     '/login',
     [AuthController::class, 'login']
+);
+
+Route::get(
+    '/logout',
+    [AuthController::class, 'logout']
 );
 
 
@@ -106,6 +118,16 @@ Route::get(
 );
 
 Route::get(
+    '/edit-profil-organisasi',
+    [PengurusController::class, 'formEditProfilOrganisasi']
+);
+
+Route::post(
+    '/update-profil-organisasi',
+    [PengurusController::class, 'updateProfilOrganisasi']
+);
+
+Route::get(
     '/manajemen-anggota',
     [PengurusController::class, 'manajemenAnggota']
 );
@@ -126,8 +148,23 @@ Route::get(
 );
 
 Route::get(
+    '/aktifkan-anggota/{id}',
+    [PengurusController::class, 'aktifkanAnggota']
+);
+
+Route::get(
     '/manajemen-kegiatan',
     [PengurusController::class, 'manajemenKegiatan']
+);
+
+Route::get(
+    '/detail-kegiatan/{id}',
+    [PengurusController::class, 'detailKegiatan']
+);
+
+Route::get(
+    '/hapus-peserta-kegiatan/{id}',
+    [PengurusController::class, 'hapusPesertaKegiatan']
 );
 
 Route::get(
@@ -158,6 +195,21 @@ Route::get(
 Route::post(
     '/tambah-transaksi',
     [PengurusController::class, 'tambahTransaksi']
+);
+
+Route::get(
+    '/hapus-transaksi/{id}',
+    [PengurusController::class, 'hapusTransaksi']
+);
+
+Route::get(
+    '/edit-transaksi/{id}',
+    [PengurusController::class, 'editTransaksi']
+);
+
+Route::post(
+    '/update-transaksi/{id}',
+    [PengurusController::class, 'updateTransaksi']
 );
 
 Route::get(

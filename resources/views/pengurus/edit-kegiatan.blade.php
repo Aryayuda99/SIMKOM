@@ -3,6 +3,10 @@
 @section('title', 'Edit Detail Kegiatan')
 
 @section('content')
+@php
+    $tanggalKosong = empty($kegiatan->tanggal_pelaksanaan) || $kegiatan->tanggal_pelaksanaan === '1000-01-01';
+@endphp
+
 <form class="card modal-page" method="POST" action="/update-kegiatan">
     @csrf
     <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
@@ -16,7 +20,7 @@
 
     <div class="field">
         <label>Tanggal Kegiatan</label>
-        <input type="date" name="tanggal_pelaksanaan" value="{{ $kegiatan->tanggal_pelaksanaan }}" required>
+        <input type="date" name="tanggal_pelaksanaan" value="{{ $tanggalKosong ? '' : $kegiatan->tanggal_pelaksanaan }}" required>
     </div>
     <div class="field">
         <label>Lokasi</label>

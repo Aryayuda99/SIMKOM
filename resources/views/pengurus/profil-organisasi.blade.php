@@ -8,7 +8,7 @@
         <h1>Profil Organisasi</h1>
         <p class="subtitle">Informasi dan identitas organisasi</p>
     </div>
-    <button class="primary" type="button">Edit Profil</button>
+    <a class="btn primary" href="/edit-profil-organisasi">Edit Profil</a>
 </div>
 
 <section class="card">

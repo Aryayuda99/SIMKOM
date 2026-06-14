@@ -3,6 +3,18 @@
 @section('title', 'Proposal & LPJ')
 
 @section('content')
+
+@if ($errors->any())
+<script>
+    alert('{{ $errors->first() }}');
+</script>
+@endif
+
+@if(session('error'))
+<script>
+    alert('{{ session('error') }}');
+</script>
+@endif
 <div class="page-title">
     <div>
         <h1>Proposal & LPJ</h1>

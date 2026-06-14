@@ -25,22 +25,63 @@
         </div>
         <button>Export</button>
     </div>
+
     <div class="table-wrap">
         <table>
-            <thead><tr><th>Tanggal</th><th>Deskripsi</th><th>Tipe</th><th>Nominal</th><th>Sumber</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Deskripsi</th>
+                    <th>Tipe</th>
+                    <th>Nominal</th>
+                    <th>Sumber</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
             <tbody>
             @forelse($transaksi as $item)
                 <tr>
                     <td>{{ $item->tanggal_transaksi }}</td>
+
                     <td>{{ $item->keterangan }}</td>
-                    <td><span class="badge {{ $item->jenis_transaksi === 'pemasukan' ? 'green' : 'red' }}">{{ ucfirst($item->jenis_transaksi) }}</span></td>
-                    <td class="{{ $item->jenis_transaksi === 'pemasukan' ? 'green' : 'red' }}"><strong>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</strong></td>
+
+                    <td>
+                        <span class="badge {{ $item->jenis_transaksi === 'pemasukan' ? 'green' : 'red' }}">
+                            {{ ucfirst($item->jenis_transaksi) }}
+                        </span>
+                    </td>
+
+                    <td class="{{ $item->jenis_transaksi === 'pemasukan' ? 'green' : 'red' }}">
+                        <strong>
+                            Rp {{ number_format($item->jumlah, 0, ',', '.') }}
+                        </strong>
+                    </td>
+
                     <td>{{ $item->nama_kegiatan }}</td>
+
+                    <td>
+                        <a href="/edit-transaksi/{{ $item->id_transaksi }}"
+                           class="btn">
+                            Edit
+                        </a>
+
+                        <a href="/hapus-transaksi/{{ $item->id_transaksi }}"
+                           class="btn danger"
+                           onclick="return confirm('Yakin ingin menghapus transaksi ini?')">
+                            Hapus
+                        </a>
+                    </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="muted">Belum ada transaksi.</td></tr>
+                <tr>
+                    <td colspan="6" class="muted">
+                        Belum ada transaksi.
+                    </td>
+                </tr>
             @endforelse
             </tbody>
+
         </table>
     </div>
 </section>
@@ -76,4 +117,5 @@
     </div>
     <button class="primary" type="submit">Simpan</button>
 </form>
+
 @endsection

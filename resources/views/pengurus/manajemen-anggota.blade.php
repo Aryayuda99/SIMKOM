@@ -47,7 +47,13 @@
                     <td>{{ $item->program_studi }}</td>
                     <td>{{ $item->no_hp }}</td>
                     <td><span class="badge {{ $item->status_keanggotaan === 'aktif' ? 'green' : 'red' }}">{{ $item->status_keanggotaan }}</span></td>
-                    <td><a class="btn danger" href="/nonaktifkan-anggota/{{ $item->id_anggota }}">Nonaktifkan</a></td>
+                    <td>
+                        @if($item->status_keanggotaan === 'aktif')
+                            <a class="btn danger" href="/nonaktifkan-anggota/{{ $item->id_anggota }}">Nonaktifkan</a>
+                        @else
+                            <a class="btn primary" href="/aktifkan-anggota/{{ $item->id_anggota }}">Aktifkan Anggota</a>
+                        @endif
+                    </td>
                 </tr>
             @empty
                 <tr><td colspan="5" class="muted">Belum ada anggota.</td></tr>
