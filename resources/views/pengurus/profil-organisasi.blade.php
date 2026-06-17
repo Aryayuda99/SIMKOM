@@ -31,7 +31,7 @@
 <section class="card">
     <div class="split">
         <h2>Visi & Misi</h2>
-        <span class="badge">Hanya dapat diubah oleh Admin</span>
+        <span class="badge">Hanya dapat diubah Admin</span>
     </div>
     <div style="margin-top:28px">
         <h3>Visi</h3>
