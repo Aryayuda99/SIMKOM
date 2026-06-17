@@ -14,7 +14,7 @@
 <section class="grid two">
     <article class="card">
         <div class="actions">
-            <div class="tile-icon">▣</div>
+            <div class="tile-icon">📅</div>
             <div><h2>Laporan Kegiatan</h2><p class="muted">Ringkasan semua kegiatan organisasi dalam periode tertentu</p></div>
         </div>
         <form method="GET" style="margin-top:20px">
@@ -33,7 +33,7 @@
     </article>
     <article class="card">
         <div class="actions">
-            <div class="tile-icon">▧</div>
+            <div class="tile-icon">💰</div>
             <div><h2>Laporan Keuangan</h2><p class="muted">Rincian pemasukan, pengeluaran, dan saldo keuangan</p></div>
         </div>
         <form method="GET" style="margin-top:20px">

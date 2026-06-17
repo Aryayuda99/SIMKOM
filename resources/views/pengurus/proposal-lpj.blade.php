@@ -96,7 +96,7 @@
 </section>
 
 <section class="notice">
-    <div class="hero-icon">▧</div>
+    <div class="hero-icon">📄</div>
     <div>
         <h2>Informasi Upload Dokumen</h2>
         <p class="subtitle">Format proposal dan LPJ: PDF atau DOCX. Format dokumentasi: JPG, PNG, atau ZIP.</p>

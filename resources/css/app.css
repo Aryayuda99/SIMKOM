@@ -103,7 +103,7 @@ a { color: inherit; text-decoration: none; }
 .nav span { width: 20px; text-align: center; }
 .nav-group { display: grid; gap: 4px; }
 .nav-group a { margin-left: 32px; }
-.nav-title { font-weight: 600; }
+.nav-title { font-weight: 600; width: auto; text-align: left; }
 
 .sidebar-footer {
     margin-top: auto;
