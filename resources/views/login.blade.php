@@ -264,7 +264,7 @@
                 <input
                     type="email"
                     name="email"
-                    placeholder="nama@simkom.ac.id"
+                    placeholder="nama@gmail.com"
                     value="{{ old('email', request()->cookie('simkom_remember_email')) }}"
                     required
                 >

@@ -18,17 +18,17 @@
         </div>
 
         <nav class="nav">
-            <a class="{{ request()->is('dashboard-pengurus') ? 'active' : '' }}" href="/dashboard-pengurus"><span>▦</span>Dashboard</a>
-            <a class="{{ request()->is('profil-organisasi') || request()->is('edit-profil-organisasi') ? 'active' : '' }}" href="/profil-organisasi"><span>▤</span>Profil Organisasi</a>
-            <a class="{{ request()->is('manajemen-anggota') ? 'active' : '' }}" href="/manajemen-anggota"><span>◎</span>Manajemen Anggota</a>
+            <a class="{{ request()->is('dashboard-pengurus') ? 'active' : '' }}" href="/dashboard-pengurus"><span>🏠</span>Dashboard</a>
+            <a class="{{ request()->is('profil-organisasi') || request()->is('edit-profil-organisasi') ? 'active' : '' }}" href="/profil-organisasi"><span>🏢</span>Profil Organisasi</a>
+            <a class="{{ request()->is('manajemen-anggota') ? 'active' : '' }}" href="/manajemen-anggota"><span>👥</span>Manajemen Anggota</a>
             <div class="nav-group">
-                <span class="nav-title">▣ Kegiatan</span>
+                <span class="nav-title">📅 Kegiatan</span>
                 <a class="{{ request()->is('manajemen-kegiatan') || request()->is('detail-kegiatan/*') || request()->is('edit-kegiatan/*') ? 'active' : '' }}" href="/manajemen-kegiatan">Manajemen Kegiatan</a>
                 <a class="{{ request()->is('riwayat-kegiatan') ? 'active' : '' }}" href="/riwayat-kegiatan">Riwayat Kegiatan</a>
             </div>
-            <a class="{{ request()->is('proposal-lpj') ? 'active' : '' }}" href="/proposal-lpj"><span>▧</span>Proposal & LPJ</a>
-            <a class="{{ request()->is('keuangan') ? 'active' : '' }}" href="/keuangan"><span>▨</span>Keuangan</a>
-            <a class="{{ request()->is('ekspor-laporan') ? 'active' : '' }}" href="/ekspor-laporan"><span>⇩</span>Ekspor Laporan</a>
+            <a class="{{ request()->is('proposal-lpj') ? 'active' : '' }}" href="/proposal-lpj"><span>📄</span>Proposal & LPJ</a>
+            <a class="{{ request()->is('keuangan') ? 'active' : '' }}" href="/keuangan"><span>💰</span>Keuangan</a>
+            <a class="{{ request()->is('ekspor-laporan') ? 'active' : '' }}" href="/ekspor-laporan"><span>⬇️</span>Ekspor Laporan</a>
         </nav>
 
         <div class="sidebar-footer">
@@ -38,7 +38,7 @@
 
     <main class="main">
         <header class="topbar">
-            <div class="user-chip"><b>PO</b><div><strong>Pengurus Organisasi</strong><span>HIMATIF</span></div></div>
+            <div class="user-chip"><b>PO</b><div><strong>Pengurus Organisasi</strong><span>BEM</span></div></div>
         </header>
         <section class="content">
             @if(session('success'))

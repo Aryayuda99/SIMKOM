@@ -28,10 +28,10 @@
                 <h2>{{ $item->nama_kegiatan }}</h2>
             </div>
             <p class="muted">{{ $item->deskripsi ?? 'Deskripsi kegiatan belum tersedia' }}</p>
-            <div class="meta">
-                <span>Tanggal: {{ $tanggalKosong ? '-' : $item->tanggal_pelaksanaan }}</span>
-                <span>Lokasi: {{ $item->lokasi ?? '-' }}</span>
-                <span>Peserta: {{ $item->kuota_peserta ? $item->kuota_peserta . ' peserta' : '-' }}</span>
+            <div class="meta" style="display:grid;gap:12px">
+                <span>📅 Tanggal: {{ $tanggalKosong ? 'Tanggal belum diisi' : $item->tanggal_pelaksanaan }}</span>
+                <span>📍 Lokasi: {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
+                <span>👥 Peserta: {{ $item->kuota_peserta ? $item->kuota_peserta . ' peserta' : 'Peserta belum diisi' }}</span>
             </div>
             <div class="actions" style="margin-top:18px">
                 <a class="btn primary" href="/detail-kegiatan/{{ $item->id_kegiatan }}">Lihat Detail</a>

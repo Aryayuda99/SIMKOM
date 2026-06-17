@@ -25,7 +25,7 @@
     <div class="grid three" style="margin-top:28px">
         @forelse($organisasi as $item)
             <a class="tile" href="/pendaftaran-anggota/{{ $item->id_organisasi }}">
-                <div class="tile-icon">◎</div>
+                <div class="tile-icon">🌟</div>
                 <h3>{{ $item->nama_organisasi }}</h3>
                 <strong>daftar</strong>
             </a>
@@ -39,8 +39,8 @@
     <h2>Keuntungan Bergabung</h2>
     <p class="subtitle">Manfaat yang Anda dapatkan dengan bergabung</p>
     <div class="grid three" style="margin-top:28px;text-align:center">
-        <div class="tile"><div class="tile-icon" style="margin:auto">◎</div><h3>Networking</h3><p class="muted">Bangun koneksi dengan mahasiswa lain</p></div>
-        <div class="tile"><div class="tile-icon" style="margin:auto">↗</div><h3>Pengembangan Skill</h3><p class="muted">Ikuti workshop dan pelatihan</p></div>
+        <div class="tile"><div class="tile-icon" style="margin:auto">✓</div><h3>Networking</h3><p class="muted">Bangun koneksi dengan mahasiswa lain</p></div>
+        <div class="tile"><div class="tile-icon" style="margin:auto">✓</div><h3>Pengembangan Skill</h3><p class="muted">Ikuti workshop dan pelatihan</p></div>
         <div class="tile"><div class="tile-icon" style="margin:auto">✓</div><h3>Sertifikat</h3><p class="muted">Dapatkan sertifikat kegiatan</p></div>
     </div>
 </section>

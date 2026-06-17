@@ -7,6 +7,49 @@ use Illuminate\Http\Request;
 
 class PengurusController extends Controller
 {
+    private function ringkasanKeuanganOrganisasi($idOrganisasi)
+    {
+        $totalPemasukan = DB::table('keuangan')
+            ->join(
+                'kegiatan',
+                'keuangan.id_kegiatan',
+                '=',
+                'kegiatan.id_kegiatan'
+            )
+            ->where(
+                'kegiatan.id_organisasi',
+                $idOrganisasi
+            )
+            ->where(
+                'keuangan.jenis_transaksi',
+                'pemasukan'
+            )
+            ->sum('keuangan.jumlah');
+
+        $totalPengeluaran = DB::table('keuangan')
+            ->join(
+                'kegiatan',
+                'keuangan.id_kegiatan',
+                '=',
+                'kegiatan.id_kegiatan'
+            )
+            ->where(
+                'kegiatan.id_organisasi',
+                $idOrganisasi
+            )
+            ->where(
+                'keuangan.jenis_transaksi',
+                'pengeluaran'
+            )
+            ->sum('keuangan.jumlah');
+
+        return [
+            'totalPemasukan' => $totalPemasukan,
+            'totalPengeluaran' => $totalPengeluaran,
+            'saldo' => $totalPemasukan - $totalPengeluaran,
+        ];
+    }
+
     public function dashboard()
 {
     $pengurus = DB::table('pengurus')
@@ -33,11 +76,18 @@ class PengurusController extends Controller
         )
         ->get();
 
+    $ringkasanKeuangan = $this->ringkasanKeuanganOrganisasi(
+        $pengurus->id_organisasi
+    );
+
     return view(
         'pengurus.dashboard',
-        compact(
+        array_merge(
+            compact(
             'pengurus',
             'kegiatanAktif'
+            ),
+            $ringkasanKeuangan
         )
     );
 }
@@ -595,30 +645,18 @@ public function keuangan()
         )
         ->get();
 
-        $totalPemasukan = DB::table('keuangan')
-    ->where(
-        'jenis_transaksi',
-        'pemasukan'
-    )
-    ->sum('jumlah');
-
-$totalPengeluaran = DB::table('keuangan')
-    ->where(
-        'jenis_transaksi',
-        'pengeluaran'
-    )
-    ->sum('jumlah');
-
-$saldo = $totalPemasukan - $totalPengeluaran;
+    $ringkasanKeuangan = $this->ringkasanKeuanganOrganisasi(
+        $pengurus->id_organisasi
+    );
 
     return view(
     'pengurus.keuangan',
-    compact(
-        'kegiatan',
-        'transaksi',
-        'totalPemasukan',
-        'totalPengeluaran',
-        'saldo'
+    array_merge(
+        compact(
+            'kegiatan',
+            'transaksi'
+        ),
+        $ringkasanKeuangan
     )
 );
 }
@@ -929,12 +967,302 @@ public function eksporLaporan()
     );
 }
 
-public function exportKegiatanPdf()
+private function idOrganisasiPengurus()
 {
-    return redirect('/ekspor-laporan')
-        ->with(
-            'success',
-            'Fitur export PDF belum dibuat'
+    $pengurus = DB::table('pengurus')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->first();
+
+    return $pengurus->id_organisasi;
+}
+
+private function labelPeriode($periode)
+{
+    return $periode === 'tahun'
+        ? 'Tahun Ini'
+        : 'Bulan Ini';
+}
+
+private function terapkanPeriode($query, $kolomTanggal, $periode)
+{
+    if ($periode === 'tahun') {
+        return $query->whereYear(
+            $kolomTanggal,
+            now()->year
         );
+    }
+
+    return $query
+        ->whereYear(
+            $kolomTanggal,
+            now()->year
+        )
+        ->whereMonth(
+            $kolomTanggal,
+            now()->month
+        );
+}
+
+private function dataLaporanKegiatan($periode)
+{
+    $query = DB::table('kegiatan')
+        ->where(
+            'id_organisasi',
+            $this->idOrganisasiPengurus()
+        );
+
+    return $this->terapkanPeriode(
+        $query,
+        'tanggal_pelaksanaan',
+        $periode
+    )
+    ->orderBy(
+        'tanggal_pelaksanaan',
+        'desc'
+    )
+    ->get();
+}
+
+private function dataLaporanKeuangan($periode)
+{
+    $query = DB::table('keuangan')
+        ->join(
+            'kegiatan',
+            'keuangan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
+        ->where(
+            'kegiatan.id_organisasi',
+            $this->idOrganisasiPengurus()
+        )
+        ->select(
+            'keuangan.*',
+            'kegiatan.nama_kegiatan'
+        );
+
+    return $this->terapkanPeriode(
+        $query,
+        'keuangan.tanggal_transaksi',
+        $periode
+    )
+    ->orderBy(
+        'keuangan.tanggal_transaksi',
+        'desc'
+    )
+    ->get();
+}
+
+private function escapePdfText($text)
+{
+    return str_replace(
+        ['\\', '(', ')', "\r", "\n"],
+        ['\\\\', '\(', '\)', ' ', ' '],
+        (string) $text
+    );
+}
+
+private function buatPdf($baris)
+{
+    $halaman = array_chunk(
+        $baris,
+        46
+    );
+
+    $objects = [];
+    $objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+    $objects[3] = '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+
+    $kids = [];
+
+    foreach ($halaman as $index => $isiHalaman) {
+        $pageObject = 4 + ($index * 2);
+        $contentObject = $pageObject + 1;
+        $kids[] = $pageObject . ' 0 R';
+
+        $content = "BT\n/F1 10 Tf\n50 800 Td\n14 TL\n";
+
+        foreach ($isiHalaman as $line) {
+            $content .= '(' . $this->escapePdfText($line) . ") Tj\nT*\n";
+        }
+
+        $content .= "ET";
+
+        $objects[$pageObject] = '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ' . $contentObject . ' 0 R >>';
+        $objects[$contentObject] = "<< /Length " . strlen($content) . " >>\nstream\n" . $content . "\nendstream";
+    }
+
+    $objects[2] = '<< /Type /Pages /Kids [' . implode(' ', $kids) . '] /Count ' . count($halaman) . ' >>';
+    ksort($objects);
+
+    $pdf = "%PDF-1.4\n";
+    $offsets = [0];
+
+    foreach ($objects as $number => $object) {
+        $offsets[$number] = strlen($pdf);
+        $pdf .= $number . " 0 obj\n" . $object . "\nendobj\n";
+    }
+
+    $xrefPosition = strlen($pdf);
+    $pdf .= "xref\n0 " . (count($objects) + 1) . "\n";
+    $pdf .= "0000000000 65535 f \n";
+
+    for ($i = 1; $i <= count($objects); $i++) {
+        $pdf .= str_pad($offsets[$i], 10, '0', STR_PAD_LEFT) . " 00000 n \n";
+    }
+
+    $pdf .= "trailer\n<< /Size " . (count($objects) + 1) . " /Root 1 0 R >>\n";
+    $pdf .= "startxref\n" . $xrefPosition . "\n%%EOF";
+
+    return $pdf;
+}
+
+private function downloadPdf($judul, $periode, $header, $rows, $filename)
+{
+    $lines = [
+        $judul,
+        'Periode: ' . $this->labelPeriode($periode),
+        'Tanggal Export: ' . now()->format('Y-m-d H:i'),
+        '',
+        implode(' | ', $header),
+        str_repeat('-', 110),
+    ];
+
+    foreach ($rows as $row) {
+        $line = implode(' | ', $row);
+
+        foreach (str_split($line, 110) as $chunk) {
+            $lines[] = $chunk;
+        }
+    }
+
+    return response(
+        $this->buatPdf($lines),
+        200,
+        [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]
+    );
+}
+
+private function downloadExcel($judul, $periode, $header, $rows, $filename)
+{
+    $html = '<html><head><meta charset="UTF-8"></head><body>';
+    $html .= '<h2>' . e($judul) . '</h2>';
+    $html .= '<p>Periode: ' . e($this->labelPeriode($periode)) . '</p>';
+    $html .= '<table border="1"><thead><tr>';
+
+    foreach ($header as $item) {
+        $html .= '<th>' . e($item) . '</th>';
+    }
+
+    $html .= '</tr></thead><tbody>';
+
+    foreach ($rows as $row) {
+        $html .= '<tr>';
+
+        foreach ($row as $cell) {
+            $html .= '<td>' . e($cell) . '</td>';
+        }
+
+        $html .= '</tr>';
+    }
+
+    $html .= '</tbody></table></body></html>';
+
+    return response(
+        $html,
+        200,
+        [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]
+    );
+}
+
+private function rowsKegiatan($kegiatan)
+{
+    return $kegiatan->map(function ($item) {
+        return [
+            $item->nama_kegiatan,
+            $item->tanggal_pelaksanaan,
+            $item->lokasi ?? '-',
+            $item->kuota_peserta ?? '-',
+            'Rp ' . number_format($item->biaya_pendaftaran ?? 0, 0, ',', '.'),
+        ];
+    })->toArray();
+}
+
+private function rowsKeuangan($keuangan)
+{
+    return $keuangan->map(function ($item) {
+        return [
+            $item->tanggal_transaksi,
+            $item->nama_kegiatan,
+            ucfirst($item->jenis_transaksi),
+            'Rp ' . number_format($item->jumlah ?? 0, 0, ',', '.'),
+            $item->keterangan ?? '-',
+        ];
+    })->toArray();
+}
+
+public function exportKegiatanPdf(Request $request)
+{
+    $periode = $request->get('periode', 'bulan');
+    $kegiatan = $this->dataLaporanKegiatan($periode);
+
+    return $this->downloadPdf(
+        'Laporan Kegiatan',
+        $periode,
+        ['Nama Kegiatan', 'Tanggal', 'Lokasi', 'Kuota', 'Biaya'],
+        $this->rowsKegiatan($kegiatan),
+        'laporan-kegiatan.pdf'
+    );
+}
+
+public function exportKegiatanExcel(Request $request)
+{
+    $periode = $request->get('periode', 'bulan');
+    $kegiatan = $this->dataLaporanKegiatan($periode);
+
+    return $this->downloadExcel(
+        'Laporan Kegiatan',
+        $periode,
+        ['Nama Kegiatan', 'Tanggal', 'Lokasi', 'Kuota', 'Biaya'],
+        $this->rowsKegiatan($kegiatan),
+        'laporan-kegiatan.xls'
+    );
+}
+
+public function exportKeuanganPdf(Request $request)
+{
+    $periode = $request->get('periode', 'bulan');
+    $keuangan = $this->dataLaporanKeuangan($periode);
+
+    return $this->downloadPdf(
+        'Laporan Keuangan',
+        $periode,
+        ['Tanggal', 'Kegiatan', 'Tipe', 'Nominal', 'Keterangan'],
+        $this->rowsKeuangan($keuangan),
+        'laporan-keuangan.pdf'
+    );
+}
+
+public function exportKeuanganExcel(Request $request)
+{
+    $periode = $request->get('periode', 'bulan');
+    $keuangan = $this->dataLaporanKeuangan($periode);
+
+    return $this->downloadExcel(
+        'Laporan Keuangan',
+        $periode,
+        ['Tanggal', 'Kegiatan', 'Tipe', 'Nominal', 'Keterangan'],
+        $this->rowsKeuangan($keuangan),
+        'laporan-keuangan.xls'
+    );
 }
 }

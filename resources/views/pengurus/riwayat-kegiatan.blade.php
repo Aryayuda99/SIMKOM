@@ -17,7 +17,10 @@
         @forelse($riwayat as $item)
             <article class="list-item">
                 <h2>{{ $item->nama_kegiatan }}</h2>
-                <p class="muted">{{ $item->tanggal_selesai }}</p>
+                <div class="meta">
+                    <span>Tanggal Selesai<br><strong>{{ $item->tanggal_selesai }}</strong></span>
+                    <span>Evaluasi Pembina<br><strong>{{ $item->evaluasi && $item->evaluasi !== '-' ? $item->evaluasi : 'Belum diisi' }}</strong></span>
+                </div>
                 <p class="subtitle">{{ $item->deskripsi }}</p>
                 <div class="grid four" style="margin-top:16px">
                     <span>Peserta<br><strong>{{ $item->jumlah_peserta }}</strong></span>

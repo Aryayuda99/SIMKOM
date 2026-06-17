@@ -17,9 +17,9 @@
             </div>
         </div>
         <nav class="nav">
-            <a class="{{ request()->is('dashboard-pembina') ? 'active' : '' }}" href="/dashboard-pembina"><span>▦</span>Dashboard Monitoring</a>
-            <a class="{{ request()->is('dokumen-pembina') ? 'active' : '' }}" href="/dokumen-pembina"><span>✓</span>Dokumen Proposal & LPJ</a>
-            <a class="{{ request()->is('riwayat-kegiatan-pembina') ? 'active' : '' }}" href="/riwayat-kegiatan-pembina"><span>↺</span>Riwayat Kegiatan</a>
+            <a class="{{ request()->is('dashboard-pembina') ? 'active' : '' }}" href="/dashboard-pembina"><span>🏠</span>Dashboard Monitoring</a>
+            <a class="{{ request()->is('dokumen-pembina') ? 'active' : '' }}" href="/dokumen-pembina"><span>📄</span>Dokumen Proposal & LPJ</a>
+            <a class="{{ request()->is('riwayat-kegiatan-pembina') ? 'active' : '' }}" href="/riwayat-kegiatan-pembina"><span>🕒</span>Riwayat Kegiatan</a>
         </nav>
         <div class="sidebar-footer">
             <a href="/logout" class="logout">&#8617; Logout</a>

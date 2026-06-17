@@ -29,7 +29,7 @@
     @if(!request('id_organisasi'))
         <div class="empty">
             <div>
-                <div class="hero-icon" style="margin:0 auto 16px">▣</div>
+                <div class="hero-icon" style="margin:0 auto 16px">🌟</div>
                 <h2>Pilih Organisasi</h2>
                 <p>Pilih organisasi untuk melihat daftar kegiatan.</p>
             </div>

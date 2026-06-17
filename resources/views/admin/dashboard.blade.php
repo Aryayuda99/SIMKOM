@@ -20,21 +20,21 @@
 
 <section class="grid three">
     <a class="tile" href="/profil-organisasi-admin">
-        <div class="tile-icon">▤</div>
+        <div class="tile-icon">🏢</div>
         <div>
             <h3>Manajemen Data Organisasi</h3>
             <p class="muted">Kelola data organisasi mahasiswa</p>
         </div>
     </a>
     <a class="tile" href="/manajemen-anggota-admin">
-        <div class="tile-icon">◎</div>
+        <div class="tile-icon">👥</div>
         <div>
             <h3>Manajemen Anggota</h3>
             <p class="muted">Kelola anggota dan role organisasi</p>
         </div>
     </a>
     <a class="tile" href="/manajemen-kegiatan-admin">
-        <div class="tile-icon">▣</div>
+        <div class="tile-icon">📅</div>
         <div>
             <h3>Manajemen Kegiatan</h3>
             <p class="muted">Kelola kegiatan per organisasi</p>

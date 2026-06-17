@@ -17,10 +17,10 @@
             </div>
         </div>
         <nav class="nav">
-            <a class="{{ request()->is('dashboard-anggota') ? 'active' : '' }}" href="/dashboard-anggota"><span>▦</span>Dashboard</a>
-            <a class="{{ request()->is('anggota/kegiatan') ? 'active' : '' }}" href="/anggota/kegiatan"><span>▣</span>Jelajahi Kegiatan</a>
-            <a class="{{ request()->is('anggota/aktivitas') ? 'active' : '' }}" href="/anggota/aktivitas"><span>▤</span>Aktivitas Saya</a>
-            <a class="{{ request()->is('anggota/profil') ? 'active' : '' }}" href="/anggota/profil"><span>◎</span>Profil Saya</a>
+            <a class="{{ request()->is('dashboard-anggota') ? 'active' : '' }}" href="/dashboard-anggota"><span>🏠</span>Dashboard</a>
+            <a class="{{ request()->is('anggota/kegiatan') ? 'active' : '' }}" href="/anggota/kegiatan"><span>📋</span>Jelajahi Kegiatan</a>
+            <a class="{{ request()->is('anggota/aktivitas') ? 'active' : '' }}" href="/anggota/aktivitas"><span>🔍</span>Aktivitas Saya</a>
+            <a class="{{ request()->is('anggota/profil') ? 'active' : '' }}" href="/anggota/profil"><span>👤</span>Profil Saya</a>
         </nav>
         <div class="sidebar-footer">
             <a href="/logout" class="logout">&#8617; Logout</a>

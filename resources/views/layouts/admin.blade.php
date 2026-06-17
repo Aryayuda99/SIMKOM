@@ -18,10 +18,10 @@
         </div>
 
         <nav class="nav">
-            <a class="{{ request()->is('dashboard-admin') ? 'active' : '' }}" href="/dashboard-admin"><span>▦</span>Dashboard</a>
-            <a class="{{ request()->is('profil-organisasi-admin') || request()->is('tambah-ukm') || request()->is('edit-organisasi/*') ? 'active' : '' }}" href="/profil-organisasi-admin"><span>▤</span>Manajemen Data Organisasi</a>
-            <a class="{{ request()->is('manajemen-anggota-admin') || request()->is('ubah-role/*') || request()->is('reset-password/*') ? 'active' : '' }}" href="/manajemen-anggota-admin"><span>◎</span>Manajemen Anggota</a>
-            <a class="{{ request()->is('manajemen-kegiatan-admin') || request()->is('tambah-kegiatan') || request()->is('edit-kegiatan-admin/*') ? 'active' : '' }}" href="/manajemen-kegiatan-admin"><span>▣</span>Manajemen Kegiatan</a>
+            <a class="{{ request()->is('dashboard-admin') ? 'active' : '' }}" href="/dashboard-admin"><span>🏠</span>Dashboard</a>
+            <a class="{{ request()->is('profil-organisasi-admin') || request()->is('tambah-ukm') || request()->is('edit-organisasi/*') ? 'active' : '' }}" href="/profil-organisasi-admin"><span>🏢</span>Manajemen Data Organisasi</a>
+            <a class="{{ request()->is('manajemen-anggota-admin') || request()->is('ubah-role/*') || request()->is('reset-password/*') ? 'active' : '' }}" href="/manajemen-anggota-admin"><span>👥</span>Manajemen Anggota</a>
+            <a class="{{ request()->is('manajemen-kegiatan-admin') || request()->is('tambah-kegiatan') || request()->is('edit-kegiatan-admin/*') ? 'active' : '' }}" href="/manajemen-kegiatan-admin"><span>📅</span>Manajemen Kegiatan</a>
         </nav>
 
         <div class="sidebar-footer">

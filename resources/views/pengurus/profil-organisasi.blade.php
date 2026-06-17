@@ -14,7 +14,7 @@
 <section class="card">
     <h2>Informasi Dasar</h2>
     <div class="actions" style="margin-top:28px;align-items:flex-start">
-        <div class="hero-icon">▤</div>
+        <div class="hero-icon">🌟</div>
         <div class="grid" style="gap:28px">
             <div>
                 <p class="muted">Nama Organisasi</p>

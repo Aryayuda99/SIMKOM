@@ -36,36 +36,79 @@
             <article class="list-item">
                 <span class="badge green">Terdaftar</span>
                 <h3 style="margin-top:12px">{{ $item->nama_kegiatan }}</h3>
-                <p class="meta">▣ {{ $item->tanggal_pelaksanaan ?? '-' }} • {{ $item->lokasi ?? '-' }}</p>
+                <p class="meta">📅 {{ $item->tanggal_pelaksanaan ?? '-' }} • 📍 {{ $item->lokasi ?? '-' }}</p>
                 <p class="subtitle">Status pembayaran: {{ $item->status_pembayaran }}</p>
             </article>
         @empty
-            <div class="empty"><p>Belum ada kegiatan yang didaftarkan.</p></div>
+            <div class="empty" style="
+        grid-column: 1 / -1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:300px;
+        text-align:center;">
+     <p>Belum ada kegiatan yang didaftarkan.</p></div>
         @endforelse
     </div>
 </section>
 
-<section class="card">
-    <div class="split">
-        <div>
-            <h2>Kegiatan Tersedia</h2>
-            <p class="subtitle">Kegiatan organisasi yang dapat Anda ikuti</p>
-        </div>
-        <a class="btn" href="/anggota/kegiatan">Lihat Semua</a>
+<section class="notice">
+    <div class="hero-icon">✓</div>
+    <div>
+        <h2>Kegiatan Organisasi</h2>
+        <p class="subtitle">Kegiatan yang tampil hanya berasal dari organisasi yang Anda ikuti.</p>
     </div>
-    <div class="grid two" style="margin-top:24px">
-        @forelse($kegiatan as $item)
-            <article class="list-item">
-                <span class="badge blue">Tersedia</span>
-                <h3 style="margin-top:12px">{{ $item->nama_kegiatan }}</h3>
-                <div class="meta">
-                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
-                    <span>⌖ {{ $item->lokasi ?? '-' }}</span>
+</section>
+
+<section class="grid two">
+    @forelse($kegiatan as $item)
+        @php
+            $kuota = (int) ($item->kuota_peserta ?? 0);
+            $terisi = (int) ($item->jumlah_peserta ?? 0);
+            $slotTersisa = max($kuota - $terisi, 0);
+            $slotPenuh = $kuota <= 0 || $slotTersisa <= 0;
+            $persen = $kuota > 0 ? min(round(($terisi / $kuota) * 100), 100) : 0;
+        @endphp
+        <article class="card">
+            <div class="split">
+                <div class="actions">
+                    <span class="badge">{{ $item->kategori ?? 'Seminar' }}</span>
+                    <span class="badge green">
+                        {{ ($item->biaya_pendaftaran ?? 0) > 0
+                            ? 'Rp '.number_format($item->biaya_pendaftaran,0,',','.')
+                            : 'Gratis' }}
+                    </span>
                 </div>
-            </article>
-        @empty
-            <div class="empty"><p>Belum ada kegiatan tersedia.</p></div>
-        @endforelse
-    </div>
+                <span class="badge purple">Sertifikat</span>
+            </div>
+
+            <h2 style="margin-top:18px">{{ $item->nama_kegiatan }}</h2>
+            <p class="subtitle">{{ $item->deskripsi ?? 'Deskripsi kegiatan' }}</p>
+
+            <div class="meta">
+                <span>📅 {{ $item->tanggal_pelaksanaan }}</span>
+                <span>📍 {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
+                <span>👥 Diselenggarakan oleh {{ $item->nama_organisasi }}</span>
+            </div>
+
+            <div style="margin-top:18px">
+                <div class="split">
+                    <span>{{ $terisi }}/{{ $kuota }} peserta</span>
+                    <span>{{ $slotTersisa }} slot tersisa</span>
+                </div>
+                <div class="progress" style="margin-top:8px">
+                    <span style="width:{{ $persen }}%"></span>
+                </div>
+            </div>
+
+            @if($slotPenuh)
+                <button class="btn" style="width:100%;margin-top:16px" type="button" disabled>Slot Penuh</button>
+            @else
+                <a class="btn primary" style="width:100%;margin-top:16px" href="/pendaftaran-kegiatan/{{ $item->id_kegiatan }}">Daftar Sekarang</a>
+            @endif
+        </article>
+    @empty
+        <section class="card empty"><p>Belum ada kegiatan tersedia dari organisasi Anda.</p></section>
+    @endforelse
 </section>
 @endsection

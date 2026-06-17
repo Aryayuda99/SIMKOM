@@ -21,7 +21,7 @@
 <section class="grid three">
     @forelse($organisasi as $item)
         <article class="tile" style="min-height:250px">
-            <div class="tile-icon">◎</div>
+            <div class="tile-icon">🌟</div>
             <h2>{{ $item->nama_organisasi }}</h2>
             <p class="muted">{{ $item->visi ?? 'Organisasi mahasiswa' }}</p>
             <a class="btn primary" href="/pendaftaran-anggota/{{ $item->id_organisasi }}">Daftar Sekarang</a>

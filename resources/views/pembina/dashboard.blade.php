@@ -13,11 +13,11 @@
 <section class="grid two">
     <div class="card stat">
         <div><p class="muted">Organisasi Binaan</p><div class="stat-value">{{ $organisasi->nama_organisasi ?? '-' }}</div></div>
-        <div class="tile-icon">▤</div>
+        <div class="tile-icon">🌟</div>
     </div>
     <div class="card stat">
         <div><p class="muted">Dokumen Tersedia</p><div class="stat-value">{{ $jumlahDokumen }}</div></div>
-        <div class="tile-icon">✓</div>
+        <div class="tile-icon">📄</div>
     </div>
 </section>
 
@@ -30,9 +30,9 @@
                 <span class="badge green">{{ $organisasi->nama_organisasi ?? 'Organisasi' }}</span>
                 <h2 style="margin-top:12px">{{ $item->nama_kegiatan }}</h2>
                 <div class="meta">
-                    <span>▣ {{ $item->tanggal_pelaksanaan }}</span>
-                    <span>⌖ {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
-                    <span>◎ {{ $item->kuota_peserta ?? 0 }} peserta</span>
+                    <span>📅 {{ $item->tanggal_pelaksanaan }}</span>
+                    <span>📍 {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
+                    <span>👥 {{ $item->kuota_peserta ?? 0 }} peserta</span>
                 </div>
             </article>
         @empty

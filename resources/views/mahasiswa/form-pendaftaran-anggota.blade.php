@@ -12,7 +12,7 @@
 </div>
 
 <section class="notice">
-    <div class="hero-icon">◎</div>
+    <div class="hero-icon">🌟</div>
     <div>
         <h2>{{ $organisasi->nama_organisasi }}</h2>
         <p class="subtitle">{{ $organisasi->periode_kepengurusan ?? 'Pendaftaran Dibuka' }}</p>

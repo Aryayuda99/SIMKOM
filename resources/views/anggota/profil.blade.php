@@ -14,7 +14,7 @@
 <section class="card">
     <div class="actions" style="align-items:center;gap:32px">
         <div style="text-align:center">
-            <div class="avatar" style="width:130px;height:130px;font-size:34px;margin:auto">AF</div>
+            <div class="avatar" style="width:130px;height:130px;font-size:34px;margin:auto">AN</div>
             <h2 style="margin-top:14px">{{ $profil->nama }}</h2>
             <span class="badge green">{{ $profil->status_keanggotaan }}</span>
         </div>

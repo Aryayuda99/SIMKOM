@@ -17,9 +17,9 @@
             </div>
         </div>
         <nav class="nav">
-            <a class="{{ request()->is('dashboard-mahasiswa') ? 'active' : '' }}" href="/dashboard-mahasiswa"><span>▦</span>Beranda</a>
-            <a class="{{ request()->is('daftar-anggota') || request()->is('pendaftaran-anggota/*') ? 'active' : '' }}" href="/daftar-anggota"><span>◎</span>Daftar Anggota</a>
-            <a class="{{ request()->is('daftar-kegiatan') || request()->is('pendaftaran-kegiatan/*') ? 'active' : '' }}" href="/daftar-kegiatan"><span>▣</span>Daftar Kegiatan</a>
+            <a class="{{ request()->is('dashboard-mahasiswa') ? 'active' : '' }}" href="/dashboard-mahasiswa"><span>🏠</span>Beranda</a>
+            <a class="{{ request()->is('daftar-anggota') || request()->is('pendaftaran-anggota/*') ? 'active' : '' }}" href="/daftar-anggota"><span>👥</span>Daftar Anggota</a>
+            <a class="{{ request()->is('daftar-kegiatan') || request()->is('pendaftaran-kegiatan/*') ? 'active' : '' }}" href="/daftar-kegiatan"><span>📅</span>Daftar Kegiatan</a>
         </nav>
         <div class="sidebar-footer">
             <a href="/logout" class="logout">&#8617; Logout</a>

@@ -17,28 +17,38 @@
             <div class="tile-icon">▣</div>
             <div><h2>Laporan Kegiatan</h2><p class="muted">Ringkasan semua kegiatan organisasi dalam periode tertentu</p></div>
         </div>
-        <div class="field" style="margin-top:20px">
+        <form method="GET" style="margin-top:20px">
+        <div class="field">
             <label>Periode</label>
-            <select><option>Bulan Ini</option><option>Semester Ini</option><option>Tahun Ini</option></select>
+            <select name="periode">
+                <option value="bulan">Bulan Ini</option>
+                <option value="tahun">Tahun Ini</option>
+            </select>
         </div>
         <div class="grid two">
-            <a class="btn primary" href="/export-kegiatan-pdf">Export PDF</a>
-            <button type="button">Export Excel</button>
+            <button class="primary" type="submit" formaction="/export-kegiatan-pdf">Export PDF</button>
+            <button type="submit" formaction="/export-kegiatan-excel">Export Excel</button>
         </div>
+        </form>
     </article>
     <article class="card">
         <div class="actions">
             <div class="tile-icon">▧</div>
             <div><h2>Laporan Keuangan</h2><p class="muted">Rincian pemasukan, pengeluaran, dan saldo keuangan</p></div>
         </div>
-        <div class="field" style="margin-top:20px">
+        <form method="GET" style="margin-top:20px">
+        <div class="field">
             <label>Periode</label>
-            <select><option>Bulan Ini</option><option>Semester Ini</option><option>Tahun Ini</option></select>
+            <select name="periode">
+                <option value="bulan">Bulan Ini</option>
+                <option value="tahun">Tahun Ini</option>
+            </select>
         </div>
         <div class="grid two">
-            <a class="btn primary" href="/export-keuangan-pdf">Export PDF</a>
-            <button type="button">Export Excel</button>
+            <button class="primary" type="submit" formaction="/export-keuangan-pdf">Export PDF</button>
+            <button type="submit" formaction="/export-keuangan-excel">Export Excel</button>
         </div>
+        </form>
     </article>
 </section>
 

@@ -16,7 +16,7 @@
         <section class="card">
             <div class="split">
                 <div class="actions">
-                    <div class="tile-icon">▤</div>
+                    <div class="tile-icon">🌟</div>
                     <div>
                         <h2>{{ $item->nama_organisasi }}</h2>
                         <p class="muted">{{ $item->periode_kepengurusan ?? 'Periode belum diisi' }}</p>

@@ -18,7 +18,7 @@
 
     <div class="field"><label>Nama Lengkap</label><input name="nama" required placeholder="Nama sesuai identitas"></div>
     <div class="field"><label>NIM</label><input name="NIM" required placeholder="Nomor Induk Mahasiswa"></div>
-    <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@student.edu"></div>
+    <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@gmail.com"></div>
     <div class="field"><label>Program Studi</label><input name="program_studi" required placeholder="Pilih program studi"></div>
     <div class="field"><label>No. WhatsApp</label><input name="no_hp" required placeholder="08xxxxxxxxxx"></div>
     <div class="field"><label>Bukti Pembayaran</label><input type="file" name="bukti_pembayaran" required></div>

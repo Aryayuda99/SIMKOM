@@ -243,8 +243,18 @@ Route::get(
 );
 
 Route::get(
+    '/export-kegiatan-excel',
+    [PengurusController::class, 'exportKegiatanExcel']
+);
+
+Route::get(
     '/export-keuangan-pdf',
     [PengurusController::class, 'exportKeuanganPdf']
+);
+
+Route::get(
+    '/export-keuangan-excel',
+    [PengurusController::class, 'exportKeuanganExcel']
 );
 
 //=====================PEMBINA============================
@@ -261,6 +271,11 @@ Route::get(
 Route::get(
     '/riwayat-kegiatan-pembina',
     [PembinaController::class, 'riwayatKegiatan']
+);
+
+Route::post(
+    '/riwayat-kegiatan-pembina/evaluasi/{id}',
+    [PembinaController::class, 'simpanEvaluasiRiwayat']
 );
 
 //===================ADMIN======================

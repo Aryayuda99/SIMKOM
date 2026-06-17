@@ -24,7 +24,38 @@ public function dashboard()
 ->first();
 
     $kegiatan = DB::table('kegiatan')
-        ->limit(3)
+        ->leftJoin(
+            'pendaftaran_kegiatan',
+            'kegiatan.id_kegiatan',
+            '=',
+            'pendaftaran_kegiatan.id_kegiatan'
+        )
+        ->join(
+            'data_organisasi',
+            'kegiatan.id_organisasi',
+            '=',
+            'data_organisasi.id_organisasi'
+        )
+        ->where(
+            'kegiatan.id_organisasi',
+            $organisasi->id_organisasi
+        )
+        ->select(
+            'kegiatan.*',
+            'data_organisasi.nama_organisasi',
+            DB::raw('COUNT(pendaftaran_kegiatan.id_pendaftaran) as jumlah_peserta')
+        )
+        ->groupBy(
+            'kegiatan.id_kegiatan',
+            'kegiatan.id_organisasi',
+            'kegiatan.nama_kegiatan',
+            'kegiatan.tanggal_pelaksanaan',
+            'kegiatan.kuota_peserta',
+            'kegiatan.deskripsi',
+            'kegiatan.lokasi',
+            'kegiatan.biaya_pendaftaran',
+            'data_organisasi.nama_organisasi'
+        )
         ->get();
 
     $kegiatanDiikuti = DB::table(
