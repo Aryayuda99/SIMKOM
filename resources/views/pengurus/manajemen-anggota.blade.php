@@ -14,7 +14,7 @@
     <h2>Pendaftaran Anggota</h2>
     <div class="table-wrap" style="margin-top:18px">
         <table>
-            <thead><tr><th>Nama</th><th>NIM</th><th>Program Studi</th><th>No HP</th><th>Aksi</th></tr></thead>
+            <thead><tr><th>Nama</th><th>NIM</th><th>Program Studi</th><th>No HP</th><th>Bukti KTM</th><th>Aksi</th></tr></thead>
             <tbody>
             @forelse($pendaftaran as $item)
                 <tr>
@@ -22,13 +22,20 @@
                     <td>{{ $item->nim }}</td>
                     <td>{{ $item->program_studi }}</td>
                     <td>{{ $item->no_hp }}</td>
+                    <td>
+                        @if($item->kartu_identitas)
+                            <a class="btn" href="/uploads/{{ $item->kartu_identitas }}" target="_blank">Lihat KTM</a>
+                        @else
+                            <span class="muted">Belum ada bukti</span>
+                        @endif
+                    </td>
                     <td class="actions">
                         <a class="btn primary" href="/terima-anggota/{{ $item->id_pendaftaranA }}">Terima</a>
                         <a class="btn danger" href="/tolak-anggota/{{ $item->id_pendaftaranA }}">Tolak</a>
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="muted">Belum ada pendaftaran baru.</td></tr>
+                <tr><td colspan="6" class="muted">Belum ada pendaftaran baru.</td></tr>
             @endforelse
             </tbody>
         </table>

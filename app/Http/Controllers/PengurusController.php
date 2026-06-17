@@ -1011,19 +1011,31 @@ private function terapkanPeriode($query, $kolomTanggal, $periode)
 
 private function dataLaporanKegiatan($periode)
 {
-    $query = DB::table('kegiatan')
+    $query = DB::table('riwayat_kegiatan')
+        ->join(
+            'kegiatan',
+            'riwayat_kegiatan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
         ->where(
-            'id_organisasi',
+            'kegiatan.id_organisasi',
             $this->idOrganisasiPengurus()
+        )
+        ->select(
+            'riwayat_kegiatan.*',
+            'kegiatan.nama_kegiatan',
+            'kegiatan.deskripsi',
+            'kegiatan.biaya_pendaftaran'
         );
 
     return $this->terapkanPeriode(
         $query,
-        'tanggal_pelaksanaan',
+        'riwayat_kegiatan.tanggal_selesai',
         $periode
     )
     ->orderBy(
-        'tanggal_pelaksanaan',
+        'riwayat_kegiatan.tanggal_selesai',
         'desc'
     )
     ->get();
@@ -1192,9 +1204,10 @@ private function rowsKegiatan($kegiatan)
     return $kegiatan->map(function ($item) {
         return [
             $item->nama_kegiatan,
-            $item->tanggal_pelaksanaan,
-            $item->lokasi ?? '-',
-            $item->kuota_peserta ?? '-',
+            $item->tanggal_selesai,
+            $item->jumlah_peserta ?? '-',
+            $item->status ?? '-',
+            $item->evaluasi && $item->evaluasi !== '-' ? $item->evaluasi : 'Belum diisi',
             'Rp ' . number_format($item->biaya_pendaftaran ?? 0, 0, ',', '.'),
         ];
     })->toArray();
@@ -1221,7 +1234,7 @@ public function exportKegiatanPdf(Request $request)
     return $this->downloadPdf(
         'Laporan Kegiatan',
         $periode,
-        ['Nama Kegiatan', 'Tanggal', 'Lokasi', 'Kuota', 'Biaya'],
+        ['Nama Kegiatan', 'Tanggal Selesai', 'Peserta', 'Status', 'Evaluasi', 'Biaya'],
         $this->rowsKegiatan($kegiatan),
         'laporan-kegiatan.pdf'
     );
@@ -1235,7 +1248,7 @@ public function exportKegiatanExcel(Request $request)
     return $this->downloadExcel(
         'Laporan Kegiatan',
         $periode,
-        ['Nama Kegiatan', 'Tanggal', 'Lokasi', 'Kuota', 'Biaya'],
+        ['Nama Kegiatan', 'Tanggal Selesai', 'Peserta', 'Status', 'Evaluasi', 'Biaya'],
         $this->rowsKegiatan($kegiatan),
         'laporan-kegiatan.xls'
     );
