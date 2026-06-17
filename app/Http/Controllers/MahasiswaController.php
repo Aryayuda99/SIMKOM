@@ -8,6 +8,36 @@ use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
+    private function buatIdPendaftaranKegiatan()
+    {
+        $nomorTerakhir = DB::table('pendaftaran_kegiatan')
+            ->selectRaw("MAX(CAST(SUBSTRING(id_pendaftaran, 3) AS UNSIGNED)) as nomor")
+            ->value('nomor');
+
+        $nomor = ((int) $nomorTerakhir) + 1;
+
+        do {
+            $idBaru = 'PK' .
+                str_pad(
+                    $nomor,
+                    3,
+                    '0',
+                    STR_PAD_LEFT
+                );
+
+            $sudahAda = DB::table('pendaftaran_kegiatan')
+                ->where(
+                    'id_pendaftaran',
+                    $idBaru
+                )
+                ->exists();
+
+            $nomor++;
+        } while ($sudahAda);
+
+        return $idBaru;
+    }
+
     //FUNGSI DASHBOARD
     public function dashboard()
     {
@@ -135,6 +165,22 @@ public function simpanPendaftaranKegiatan(Request $request)
             ->with('success', 'Slot kegiatan sudah penuh');
     }
 
+    $sudahDaftar = DB::table('pendaftaran_kegiatan')
+        ->where(
+            'id_user',
+            session('id_user')
+        )
+        ->where(
+            'id_kegiatan',
+            $request->id_kegiatan
+        )
+        ->exists();
+
+    if ($sudahDaftar) {
+        return redirect('/daftar-kegiatan')
+            ->with('success', 'Anda sudah terdaftar pada kegiatan ini');
+    }
+
     $file = $request->file('bukti_pembayaran');
 
     $namaFile = time() .
@@ -146,18 +192,7 @@ public function simpanPendaftaranKegiatan(Request $request)
         $namaFile
     );
 
-    $jumlah = DB::table(
-        'pendaftaran_kegiatan'
-    )->count();
-
-    $idBaru =
-        'PK' .
-        str_pad(
-            $jumlah + 1,
-            3,
-            '0',
-            STR_PAD_LEFT
-        );
+    $idBaru = $this->buatIdPendaftaranKegiatan();
 
     DB::table(
         'pendaftaran_kegiatan'

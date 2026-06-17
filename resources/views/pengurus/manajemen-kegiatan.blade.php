@@ -32,6 +32,7 @@
                 <span>📅 Tanggal: {{ $tanggalKosong ? 'Tanggal belum diisi' : $item->tanggal_pelaksanaan }}</span>
                 <span>📍 Lokasi: {{ $item->lokasi ?? 'Lokasi belum diisi' }}</span>
                 <span>👥 Peserta: {{ $item->kuota_peserta ? $item->kuota_peserta . ' peserta' : 'Peserta belum diisi' }}</span>
+                <span>💰 Biaya: {{ ($item->biaya_pendaftaran ?? 0) > 0 ? 'Rp '.number_format($item->biaya_pendaftaran, 0, ',', '.') : 'Gratis' }}</span>
             </div>
             <div class="actions" style="margin-top:18px">
                 <a class="btn primary" href="/detail-kegiatan/{{ $item->id_kegiatan }}">Lihat Detail</a>

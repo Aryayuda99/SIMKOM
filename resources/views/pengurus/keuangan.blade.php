@@ -12,9 +12,9 @@
 </div>
 
 <section class="grid three">
-    <div class="card stat"><div><p class="muted">Total Pemasukan</p><div class="stat-value green">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</div></div><div class="tile-icon">↗</div></div>
-    <div class="card stat"><div><p class="muted">Total Pengeluaran</p><div class="stat-value red">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</div></div><div class="tile-icon">↘</div></div>
-    <div class="card stat"><div><p class="muted">Saldo</p><div class="stat-value blue">Rp {{ number_format($saldo, 0, ',', '.') }}</div></div><div class="tile-icon">▨</div></div>
+    <div class="card stat"><div><p class="muted">Total Pemasukan</p><div class="stat-value green">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</div></div><div class="tile-icon">🟢</div></div>
+    <div class="card stat"><div><p class="muted">Total Pengeluaran</p><div class="stat-value red">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</div></div><div class="tile-icon">🔴</div></div>
+    <div class="card stat"><div><p class="muted">Saldo</p><div class="stat-value blue">Rp {{ number_format($saldo, 0, ',', '.') }}</div></div><div class="tile-icon">💰</div></div>
 </section>
 
 <section class="card">

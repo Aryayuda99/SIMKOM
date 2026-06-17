@@ -11,7 +11,7 @@
     @csrf
     <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">
     <h2>Edit Detail Kegiatan</h2>
-    <p class="subtitle">Edit tanggal, lokasi, dan jumlah peserta kegiatan</p>
+    <p class="subtitle">Edit tanggal, lokasi, jumlah peserta, dan biaya pendaftaran kegiatan</p>
 
     <div class="card" style="background:#f9fafb;margin:18px 0">
         <h3>{{ $kegiatan->nama_kegiatan }}</h3>
@@ -29,6 +29,10 @@
     <div class="field">
         <label>Jumlah Peserta (Kuota)</label>
         <input type="number" name="kuota_peserta" value="{{ $kegiatan->kuota_peserta }}" required>
+    </div>
+    <div class="field">
+        <label>Biaya Pendaftaran</label>
+        <input type="number" name="biaya_pendaftaran" value="{{ $kegiatan->biaya_pendaftaran ?? 0 }}" min="0" required>
     </div>
     <div class="grid two">
         <a class="btn" href="/manajemen-kegiatan">Batal</a>

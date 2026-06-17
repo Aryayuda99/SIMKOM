@@ -492,7 +492,10 @@ public function updateKegiatan(Request $request)
                 => $request->lokasi,
 
             'kuota_peserta'
-                => $request->kuota_peserta
+                => $request->kuota_peserta,
+
+            'biaya_pendaftaran'
+                => $request->biaya_pendaftaran
 
         ]);
 
