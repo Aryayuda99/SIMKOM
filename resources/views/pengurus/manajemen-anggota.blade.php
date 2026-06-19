@@ -46,11 +46,12 @@
     <h2>Daftar Anggota</h2>
     <div class="table-wrap" style="margin-top:18px">
         <table>
-            <thead><tr><th>Anggota</th><th>Program Studi</th><th>No HP</th><th>Status</th><th>Aksi</th></tr></thead>
+            <thead><tr><th>Anggota</th><th>NIM</th><th>Program Studi</th><th>No HP</th><th>Status</th><th>Aksi</th></tr></thead>
             <tbody>
             @forelse($anggota as $item)
                 <tr>
                     <td><strong>{{ $item->nama }}</strong></td>
+                    <td>{{ $item->nim }}</td>
                     <td>{{ $item->program_studi }}</td>
                     <td>{{ $item->no_hp }}</td>
                     <td><span class="badge {{ $item->status_keanggotaan === 'aktif' ? 'green' : 'red' }}">{{ $item->status_keanggotaan }}</span></td>
@@ -63,7 +64,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="5" class="muted">Belum ada anggota.</td></tr>
+                <tr><td colspan="6" class="muted">Belum ada anggota.</td></tr>
             @endforelse
             </tbody>
         </table>

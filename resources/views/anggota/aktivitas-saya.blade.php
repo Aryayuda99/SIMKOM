@@ -18,7 +18,6 @@
             <article class="list-item">
                 <div class="actions">
                     <span class="badge">Kegiatan</span>
-                    <span class="badge green">{{ $item->status_pembayaran }}</span>
                 </div>
                 <h2 style="margin-top:12px">{{ $item->nama_kegiatan }}</h2>
                 <div class="meta">

@@ -38,6 +38,36 @@ class MahasiswaController extends Controller
         return $idBaru;
     }
 
+    private function buatIdPendaftaranAnggota()
+    {
+        $nomorTerakhir = DB::table('pendaftaran_anggota_online')
+            ->selectRaw("MAX(CAST(SUBSTRING(id_pendaftaranA, 3) AS UNSIGNED)) as nomor")
+            ->value('nomor');
+
+        $nomor = ((int) $nomorTerakhir) + 1;
+
+        do {
+            $idBaru = 'PA' .
+                str_pad(
+                    $nomor,
+                    3,
+                    '0',
+                    STR_PAD_LEFT
+                );
+
+            $sudahAda = DB::table('pendaftaran_anggota_online')
+                ->where(
+                    'id_pendaftaranA',
+                    $idBaru
+                )
+                ->exists();
+
+            $nomor++;
+        } while ($sudahAda);
+
+        return $idBaru;
+    }
+
     //FUNGSI DASHBOARD
     public function dashboard()
     {
@@ -76,6 +106,20 @@ public function formPendaftaranAnggota($id)
 
 public function simpanPendaftaranAnggota(Request $request)
 {
+    if (!session('id_user')) {
+        return redirect('/')
+            ->with('success', 'Silakan login terlebih dahulu');
+    }
+
+    $validated = $request->validate([
+        'id_organisasi' => 'required|exists:data_organisasi,id_organisasi',
+        'nim' => 'required|string|max:20',
+        'nama' => 'required|string|max:100',
+        'program_studi' => 'required|string|max:100',
+        'no_hp' => 'required|string|max:20',
+        'kartu_identitas' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
     $file = $request->file('kartu_identitas');
 
     $namaFile = time() .
@@ -87,28 +131,19 @@ public function simpanPendaftaranAnggota(Request $request)
         $namaFile
     );
 
-    $jumlah = DB::table(
-    'pendaftaran_anggota_online'
-)->count();
+    $idBaru = $this->buatIdPendaftaranAnggota();
 
-DB::table('pendaftaran_anggota_online')
-->insert([
-
-    'id_user' => session('id_user'),
-
-    'id_organisasi' => $request->id_organisasi,
-
-    'nim' => $request->nim,
-
-    'nama' => $request->nama,
-
-    'program_studi' => $request->program_studi,
-
-    'no_hp' => $request->no_hp,
-
-    'kartu_identitas' => $namaFile
-
-]);
+    DB::table('pendaftaran_anggota_online')
+        ->insert([
+            'id_pendaftaranA' => $idBaru,
+            'id_user' => session('id_user'),
+            'id_organisasi' => $validated['id_organisasi'],
+            'nim' => $validated['nim'],
+            'nama' => $validated['nama'],
+            'program_studi' => $validated['program_studi'],
+            'no_hp' => $validated['no_hp'],
+            'kartu_identitas' => $namaFile
+        ]);
 
     return redirect(
         '/daftar-anggota'
@@ -214,9 +249,7 @@ public function simpanPendaftaranKegiatan(Request $request)
 
         'no_hp' => $request->no_hp,
 
-        'bukti_pembayaran' => $namaFile,
-
-        'status_pembayaran' => 'belum_lunas'
+        'bukti_pembayaran' => $namaFile
 
     ]);
 

@@ -185,6 +185,16 @@ public function manajemenAnggota()
             'id_organisasi',
             $pengurus->id_organisasi
         )
+        ->select(
+            'id_anggota',
+            'id_user',
+            'id_organisasi',
+            'nim',
+            'nama',
+            'no_hp',
+            'program_studi',
+            'status_keanggotaan'
+        )
         ->get();
 
     return view(
@@ -219,6 +229,8 @@ public function terimaAnggota($id)
         'id_user' => $pendaftaran->id_user,
 
         'id_organisasi' => $pendaftaran->id_organisasi,
+
+        'nim' => $pendaftaran->nim,
 
         'nama' => $pendaftaran->nama,
 

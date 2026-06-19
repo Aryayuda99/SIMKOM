@@ -37,7 +37,6 @@
                 <span class="badge green">Terdaftar</span>
                 <h3 style="margin-top:12px">{{ $item->nama_kegiatan }}</h3>
                 <p class="meta">📅 {{ $item->tanggal_pelaksanaan ?? '-' }} • 📍 {{ $item->lokasi ?? '-' }}</p>
-                <p class="subtitle">Status pembayaran: {{ $item->status_pembayaran }}</p>
             </article>
         @empty
             <div class="empty" style="
