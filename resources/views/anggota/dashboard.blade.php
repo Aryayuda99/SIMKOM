@@ -1,8 +1,12 @@
+{{-- Halaman Dashboard --}}
 @extends('layouts.anggota')
 
 @section('title', 'Dashboard Anggota')
 
+{{-- Konten utama halaman Dashboard --}}
+
 @section('content')
+{{-- Section informasi halaman --}}
 <section class="hero solid">
     <div>
         <h1>Selamat Datang!</h1>
@@ -10,6 +14,8 @@
     </div>
     <div class="hero-icon" style="margin-left:auto">◎</div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Visi & Misi Organisasi</h2>
@@ -22,6 +28,8 @@
         <p class="subtitle">{{ $organisasi->misi ?? 'Misi belum tersedia.' }}</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <div class="split">
@@ -51,6 +59,8 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="notice">
     <div class="hero-icon">✓</div>
     <div>
@@ -58,6 +68,8 @@
         <p class="subtitle">Kegiatan yang tampil hanya berasal dari organisasi yang Anda ikuti.</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid two">
     @forelse($kegiatan as $item)
@@ -100,6 +112,8 @@
                 </div>
             </div>
 
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
+
             @if($slotPenuh)
                 <button class="btn" style="width:100%;margin-top:16px" type="button" disabled>Slot Penuh</button>
             @else
@@ -107,6 +121,7 @@
             @endif
         </article>
     @empty
+        {{-- Section informasi halaman --}}
         <section class="card empty"><p>Belum ada kegiatan tersedia dari organisasi Anda.</p></section>
     @endforelse
 </section>

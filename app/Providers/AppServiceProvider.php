@@ -4,10 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+// Service provider utama untuk registrasi dan bootstrap layanan aplikasi.
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Mendaftarkan layanan aplikasi jika dibutuhkan.
      */
     public function register(): void
     {
@@ -15,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Menjalankan konfigurasi awal layanan saat aplikasi mulai berjalan.
      */
     public function boot(): void
     {

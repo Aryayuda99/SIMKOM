@@ -1,6 +1,9 @@
+{{-- Halaman Edit Organisasi --}}
 @extends('layouts.admin')
 
 @section('title', 'Edit Profil Organisasi')
+
+{{-- Konten utama halaman Edit Organisasi --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Informasi dan identitas organisasi</p>
     </div>
 </div>
+
+{{-- Form input data --}}
 
 <form class="card" method="POST" action="/update-organisasi">
     @csrf

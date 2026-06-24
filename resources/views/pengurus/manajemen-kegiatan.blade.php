@@ -1,6 +1,9 @@
+{{-- Halaman Manajemen Kegiatan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Manajemen Kegiatan')
+
+{{-- Konten utama halaman Manajemen Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="notice">
     <div class="hero-icon">Edit</div>
     <div>
@@ -17,6 +22,8 @@
         <p class="subtitle">Sebagai pengurus, Anda dapat mengedit tanggal, waktu, lokasi, dan jumlah peserta kegiatan.</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid three">
     @forelse($kegiatan as $item)
@@ -40,6 +47,7 @@
             </div>
         </article>
     @empty
+        {{-- Section informasi halaman --}}
         <section class="card empty"><p>Belum ada kegiatan.</p></section>
     @endforelse
 </section>

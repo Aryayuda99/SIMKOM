@@ -1,6 +1,9 @@
+{{-- Halaman Dashboard --}}
 @extends('layouts.pembina')
 
 @section('title', 'Dashboard Monitoring')
+
+{{-- Konten utama halaman Dashboard --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Sistem monitoring kegiatan organisasi mahasiswa</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid two">
     <div class="card stat">
@@ -20,6 +25,8 @@
         <div class="tile-icon">📄</div>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Kegiatan yang terbaru</h2>

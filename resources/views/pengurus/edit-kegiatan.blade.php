@@ -1,11 +1,16 @@
+{{-- Halaman Edit Kegiatan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Edit Detail Kegiatan')
+
+{{-- Konten utama halaman Edit Kegiatan --}}
 
 @section('content')
 @php
     $tanggalKosong = empty($kegiatan->tanggal_pelaksanaan) || $kegiatan->tanggal_pelaksanaan === '1000-01-01';
 @endphp
+
+{{-- Form input data --}}
 
 <form class="card modal-page" method="POST" action="/update-kegiatan">
     @csrf

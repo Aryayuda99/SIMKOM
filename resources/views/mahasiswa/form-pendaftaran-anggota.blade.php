@@ -1,6 +1,9 @@
+{{-- Halaman Form Pendaftaran Anggota --}}
 @extends('layouts.mahasiswa')
 
 @section('title', 'Formulir Pendaftaran Anggota')
+
+{{-- Konten utama halaman Form Pendaftaran Anggota --}}
 
 @section('content')
 <div class="page-title">
@@ -11,6 +14,8 @@
     <a class="btn" href="/daftar-anggota">Pilih Organisasi Lain</a>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="notice">
     <div class="hero-icon">🌟</div>
     <div>
@@ -18,6 +23,8 @@
         <p class="subtitle">{{ $organisasi->periode_kepengurusan ?? 'Pendaftaran Dibuka' }}</p>
     </div>
 </section>
+
+{{-- Form input data --}}
 
 <form class="card" method="POST" action="/pendaftaran-anggota" enctype="multipart/form-data">
     @csrf
@@ -43,6 +50,8 @@
         <button class="primary" type="submit">Kirim Pendaftaran</button>
     </div>
 </form>
+
+{{-- Section informasi halaman --}}
 
 <section class="notice">
     <div class="hero-icon">✓</div>

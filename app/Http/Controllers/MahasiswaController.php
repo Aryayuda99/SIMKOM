@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
+    // Membuat ID pendaftaran kegiatan yang unik berdasarkan nomor terakhir.
     private function buatIdPendaftaranKegiatan()
     {
+        // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
         $nomorTerakhir = DB::table('pendaftaran_kegiatan')
+            // Select menentukan kolom yang dikirim ke proses atau view.
             ->selectRaw("MAX(CAST(SUBSTRING(id_pendaftaran, 3) AS UNSIGNED)) as nomor")
             ->value('nomor');
 
@@ -25,7 +28,9 @@ class MahasiswaController extends Controller
                     STR_PAD_LEFT
                 );
 
+            // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
             $sudahAda = DB::table('pendaftaran_kegiatan')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->where(
                     'id_pendaftaran',
                     $idBaru
@@ -38,9 +43,13 @@ class MahasiswaController extends Controller
         return $idBaru;
     }
 
+    // Membuat ID pendaftaran anggota yang unik berdasarkan nomor terakhir.
+
     private function buatIdPendaftaranAnggota()
     {
+        // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
         $nomorTerakhir = DB::table('pendaftaran_anggota_online')
+            // Select menentukan kolom yang dikirim ke proses atau view.
             ->selectRaw("MAX(CAST(SUBSTRING(id_pendaftaranA, 3) AS UNSIGNED)) as nomor")
             ->value('nomor');
 
@@ -55,7 +64,9 @@ class MahasiswaController extends Controller
                     STR_PAD_LEFT
                 );
 
+            // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
             $sudahAda = DB::table('pendaftaran_anggota_online')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->where(
                     'id_pendaftaranA',
                     $idBaru
@@ -71,6 +82,7 @@ class MahasiswaController extends Controller
     //FUNGSI DASHBOARD
     public function dashboard()
     {
+        // Mengakses tabel data_organisasi untuk informasi profil organisasi.
         $organisasi = DB::table('data_organisasi')
             ->limit(3)
             ->get();
@@ -84,6 +96,7 @@ class MahasiswaController extends Controller
     //FUNGSI DAFTAR ANGGOTA
     public function daftarAnggota()
 {
+    // Mengakses tabel data_organisasi untuk informasi profil organisasi.
     $organisasi = DB::table('data_organisasi')->get();
 
     return view(
@@ -92,9 +105,13 @@ class MahasiswaController extends Controller
     );
 }
 
+// Menampilkan form pendaftaran anggota berdasarkan organisasi yang dipilih.
+
 public function formPendaftaranAnggota($id)
 {
+    // Mengakses tabel data_organisasi untuk informasi profil organisasi.
     $organisasi = DB::table('data_organisasi')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_organisasi', $id)
         ->first();
 
@@ -103,6 +120,8 @@ public function formPendaftaranAnggota($id)
         compact('organisasi')
     );
 }
+
+// Memvalidasi data pendaftaran anggota, mengunggah kartu identitas, dan menyimpan pendaftaran.
 
 public function simpanPendaftaranAnggota(Request $request)
 {
@@ -133,6 +152,7 @@ public function simpanPendaftaranAnggota(Request $request)
 
     $idBaru = $this->buatIdPendaftaranAnggota();
 
+    // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
     DB::table('pendaftaran_anggota_online')
         ->insert([
             'id_pendaftaranA' => $idBaru,
@@ -154,6 +174,8 @@ public function simpanPendaftaranAnggota(Request $request)
     
 }
 
+// Menampilkan form pendaftaran kegiatan setelah memeriksa role dan kuota.
+
 public function formPendaftaranKegiatan($id)
 {
     if (session('role') === 'pengurus') {
@@ -161,11 +183,15 @@ public function formPendaftaranKegiatan($id)
             ->with('success', 'Pengurus tidak dapat mendaftar kegiatan');
     }
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->first();
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     $jumlahPeserta = DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->count();
 
@@ -180,6 +206,8 @@ public function formPendaftaranKegiatan($id)
     );
 }
 
+// Memeriksa kuota, mencegah pendaftaran ganda, mengunggah bukti pembayaran, dan menyimpan pendaftaran kegiatan.
+
 public function simpanPendaftaranKegiatan(Request $request)
 {
     if (session('role') === 'pengurus') {
@@ -187,11 +215,15 @@ public function simpanPendaftaranKegiatan(Request $request)
             ->with('success', 'Pengurus tidak dapat mendaftar kegiatan');
     }
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $request->id_kegiatan)
         ->first();
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     $jumlahPesertaKegiatan = DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $request->id_kegiatan)
         ->count();
 
@@ -200,11 +232,14 @@ public function simpanPendaftaranKegiatan(Request $request)
             ->with('success', 'Slot kegiatan sudah penuh');
     }
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     $sudahDaftar = DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $request->id_kegiatan
@@ -229,6 +264,7 @@ public function simpanPendaftaranKegiatan(Request $request)
 
     $idBaru = $this->buatIdPendaftaranKegiatan();
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     DB::table(
         'pendaftaran_kegiatan'
     )->insert([
@@ -259,8 +295,10 @@ public function simpanPendaftaranKegiatan(Request $request)
             'Pendaftaran kegiatan berhasil'
         );
 }
+// Menampilkan daftar kegiatan beserta organisasi dan jumlah peserta terdaftar.
 public function daftarKegiatan()
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
         ->leftJoin(
             'pendaftaran_kegiatan',
@@ -268,12 +306,14 @@ public function daftarKegiatan()
             '=',
             'pendaftaran_kegiatan.id_kegiatan'
         )
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'data_organisasi',
             'kegiatan.id_organisasi',
             '=',
             'data_organisasi.id_organisasi'
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'kegiatan.*',
             'data_organisasi.nama_organisasi',

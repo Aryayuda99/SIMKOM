@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
+    // Memvalidasi kredensial login, mengambil data user, menyimpan session, dan mengarahkan sesuai role.
     public function login(Request $request)
     {
         $request->validate([
@@ -15,8 +16,11 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+        // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
         $user = DB::table('users')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('email', $request->email)
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('password', $request->password)
             ->first();
 
@@ -70,6 +74,8 @@ if ($user->role == 'admin') {
 
 }
 }
+
+    // Menghapus session pengguna dan mengarahkan kembali ke halaman login.
 
     public function logout(Request $request)
     {

@@ -1,8 +1,12 @@
+{{-- Halaman Reset Password --}}
 @extends('layouts.admin')
 
 @section('title', 'Reset Password')
 
+{{-- Konten utama halaman Reset Password --}}
+
 @section('content')
+{{-- Form input data --}}
 <form class="card modal-page" method="POST" action="/simpan-password">
     @csrf
     <input type="hidden" name="id_user" value="{{ $user->id_user }}">

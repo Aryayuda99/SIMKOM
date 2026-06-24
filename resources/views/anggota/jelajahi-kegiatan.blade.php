@@ -1,6 +1,9 @@
+{{-- Halaman Jelajahi Kegiatan --}}
 @extends('layouts.anggota')
 
 @section('title', 'Jelajahi Kegiatan')
+
+{{-- Konten utama halaman Jelajahi Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Temukan kegiatan organisasi dan kegiatan umum</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="notice">
     <div class="hero-icon">Info</div>
@@ -20,6 +25,8 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Kegiatan Organisasi Saya</h2>
 
@@ -27,12 +34,15 @@
         @forelse($kegiatanOrganisasi as $item)
             @include('anggota.partials.kartu-kegiatan', ['item' => $item, 'label' => 'Seminar'])
         @empty
+            {{-- Section informasi halaman --}}
             <section class="card empty">
                 <p>Belum ada kegiatan organisasi.</p>
             </section>
         @endforelse
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Semua Kegiatan</h2>
@@ -41,6 +51,7 @@
         @forelse($semuaKegiatan as $item)
             @include('anggota.partials.kartu-kegiatan', ['item' => $item, 'label' => $item->nama_organisasi])
         @empty
+            {{-- Section informasi halaman --}}
             <section class="card empty">
                 <p>Belum ada kegiatan tersedia.</p>
             </section>

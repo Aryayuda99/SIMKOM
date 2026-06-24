@@ -1,6 +1,9 @@
+{{-- Halaman Daftar Kegiatan --}}
 @extends('layouts.mahasiswa')
 
 @section('title', 'Pendaftaran Kegiatan')
+
+{{-- Konten utama halaman Daftar Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="notice">
     <div class="hero-icon">✓</div>
     <div>
@@ -17,6 +22,8 @@
         <p class="subtitle">Pendaftaran online dilakukan melalui platform ini. Konfirmasi dikirim via email.</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid two">
     @forelse($kegiatan as $item)
@@ -46,6 +53,7 @@
                 <div class="split"><span>{{ $terisi }}/{{ $kuota }} peserta</span><span>{{ $slotTersisa }} slot tersisa</span></div>
                 <div class="progress" style="margin-top:8px"><span style="width:{{ $persen }}%"></span></div>
             </div>
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
             @if($slotPenuh)
                 <button class="btn" style="width:100%;margin-top:16px" type="button" disabled>Slot Penuh</button>
             @else
@@ -53,6 +61,7 @@
             @endif
         </article>
     @empty
+        {{-- Section informasi halaman --}}
         <section class="card empty"><p>Belum ada kegiatan tersedia.</p></section>
     @endforelse
 </section>

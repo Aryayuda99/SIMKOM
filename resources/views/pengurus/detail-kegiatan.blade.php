@@ -1,6 +1,9 @@
+{{-- Halaman Detail Kegiatan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Detail Kegiatan')
+
+{{-- Konten utama halaman Detail Kegiatan --}}
 
 @section('content')
 @php
@@ -23,6 +26,8 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <div class="split">
         <div class="actions">
@@ -33,6 +38,7 @@
                     : 'Gratis' }}
             </span>
         </div>
+        {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
         @if(!$detailKosong)
             <a
                 class="btn primary"
@@ -79,6 +85,8 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <div class="split">
         <div>
@@ -89,6 +97,7 @@
     </div>
 
     <div class="table-wrap" style="margin-top:18px">
+        {{-- Tabel data --}}
         <table>
             <thead>
                 <tr>
@@ -110,6 +119,7 @@
                     <td>{{ $item->email ?? '-' }}</td>
                     <td>{{ $item->no_hp ?? '-' }}</td>
                     <td>
+                        {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
                         @if($item->bukti_pembayaran)
                             <a class="btn" href="/uploads/{{ $item->bukti_pembayaran }}" target="_blank">Lihat Bukti</a>
                         @else

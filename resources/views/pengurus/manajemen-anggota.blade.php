@@ -1,6 +1,9 @@
+{{-- Halaman Manajemen Anggota --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Manajemen Anggota')
+
+{{-- Konten utama halaman Manajemen Anggota --}}
 
 @section('content')
 <div class="page-title">
@@ -10,9 +13,12 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Pendaftaran Anggota</h2>
     <div class="table-wrap" style="margin-top:18px">
+        {{-- Tabel data --}}
         <table>
             <thead><tr><th>Nama</th><th>NIM</th><th>Program Studi</th><th>No HP</th><th>Bukti KTM</th><th>Aksi</th></tr></thead>
             <tbody>
@@ -23,6 +29,7 @@
                     <td>{{ $item->program_studi }}</td>
                     <td>{{ $item->no_hp }}</td>
                     <td>
+                        {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
                         @if($item->kartu_identitas)
                             <a class="btn" href="/uploads/{{ $item->kartu_identitas }}" target="_blank">Lihat KTM</a>
                         @else
@@ -42,9 +49,12 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Daftar Anggota</h2>
     <div class="table-wrap" style="margin-top:18px">
+        {{-- Tabel data --}}
         <table>
             <thead><tr><th>Anggota</th><th>NIM</th><th>Program Studi</th><th>No HP</th><th>Status</th><th>Aksi</th></tr></thead>
             <tbody>
@@ -56,6 +66,7 @@
                     <td>{{ $item->no_hp }}</td>
                     <td><span class="badge {{ $item->status_keanggotaan === 'aktif' ? 'green' : 'red' }}">{{ $item->status_keanggotaan }}</span></td>
                     <td>
+                        {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
                         @if($item->status_keanggotaan === 'aktif')
                             <a class="btn danger" href="/nonaktifkan-anggota/{{ $item->id_anggota }}">Nonaktifkan</a>
                         @else

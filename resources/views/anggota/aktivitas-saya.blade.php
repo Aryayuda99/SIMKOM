@@ -1,6 +1,9 @@
+{{-- Halaman Aktivitas Saya --}}
 @extends('layouts.anggota')
 
 @section('title', 'Aktivitas Saya')
+
+{{-- Konten utama halaman Aktivitas Saya --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Riwayat kegiatan yang telah Anda ikuti</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Kegiatan yang Dihadiri</h2>
@@ -34,6 +39,8 @@
         @endforelse
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="notice">
     <div class="hero-icon">✓</div>

@@ -1,3 +1,4 @@
+{{-- Halaman Mahasiswa --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +17,7 @@
                 <span>Portal Mahasiswa</span>
             </div>
         </div>
+        {{-- Navigasi utama aplikasi --}}
         <nav class="nav">
             <a class="{{ request()->is('dashboard-mahasiswa') ? 'active' : '' }}" href="/dashboard-mahasiswa"><span>🏠</span>Beranda</a>
             <a class="{{ request()->is('daftar-anggota') || request()->is('pendaftaran-anggota/*') ? 'active' : '' }}" href="/daftar-anggota"><span>👥</span>Daftar Anggota</a>
@@ -26,11 +28,15 @@
         </div>
     </aside>
 
+    {{-- Area konten utama --}}
+
     <main class="main">
         <header class="topbar">
             <span class="portal-badge">Portal Mahasiswa</span>
         </header>
+        {{-- Section informasi halaman --}}
         <section class="content">
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
             @if(session('success'))
                 <div class="toast">{{ session('success') }}</div>
             @endif

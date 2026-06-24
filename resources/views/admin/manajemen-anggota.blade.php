@@ -1,6 +1,9 @@
+{{-- Halaman Manajemen Anggota --}}
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Anggota')
+
+{{-- Konten utama halaman Manajemen Anggota --}}
 
 @section('content')
 <div class="page-title">
@@ -10,11 +13,15 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
+    {{-- Form input data --}}
     <form method="GET" action="/manajemen-anggota-admin">
         <label>Pilih Organisasi</label>
         <select name="id_organisasi" onchange="this.form.submit()">
             <option value="">Pilih organisasi.</option>
+            {{-- Perulangan data untuk ditampilkan ke pengguna --}}
             @foreach($organisasi as $org)
                 <option value="{{ $org->id_organisasi }}" {{ request('id_organisasi') == $org->id_organisasi ? 'selected' : '' }}>
                     {{ $org->nama_organisasi }}
@@ -24,7 +31,10 @@
     </form>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
     @if(!request('id_organisasi'))
         <div class="empty">
             <div>
@@ -42,6 +52,7 @@
             <input style="max-width:360px" placeholder="Cari nama atau NIM...">
         </div>
         <div class="table-wrap">
+            {{-- Tabel data --}}
             <table>
                 <thead>
                     <tr>

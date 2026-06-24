@@ -1,6 +1,9 @@
+{{-- Halaman Ekspor Laporan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Ekspor Laporan')
+
+{{-- Konten utama halaman Ekspor Laporan --}}
 
 @section('content')
 <div class="page-title">
@@ -11,12 +14,14 @@
 </div>
 
 <h2 style="margin-bottom:18px">Jenis Laporan</h2>
+{{-- Section informasi halaman --}}
 <section class="grid two">
     <article class="card">
         <div class="actions">
             <div class="tile-icon">📅</div>
             <div><h2>Laporan Kegiatan</h2><p class="muted">Ringkasan semua kegiatan organisasi dalam periode tertentu</p></div>
         </div>
+        {{-- Form input data --}}
         <form method="GET" style="margin-top:20px">
         <div class="field">
             <label>Periode</label>
@@ -36,6 +41,7 @@
             <div class="tile-icon">💰</div>
             <div><h2>Laporan Keuangan</h2><p class="muted">Rincian pemasukan, pengeluaran, dan saldo keuangan</p></div>
         </div>
+        {{-- Form input data --}}
         <form method="GET" style="margin-top:20px">
         <div class="field">
             <label>Periode</label>
@@ -51,6 +57,8 @@
         </form>
     </article>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Ringkasan Data</h2>

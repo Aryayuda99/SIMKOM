@@ -1,6 +1,9 @@
+{{-- Halaman Profil --}}
 @extends('layouts.anggota')
 
 @section('title', 'Profil Saya')
+
+{{-- Konten utama halaman Profil --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
     <button>Edit Profil</button>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <div class="actions" style="align-items:center;gap:32px">

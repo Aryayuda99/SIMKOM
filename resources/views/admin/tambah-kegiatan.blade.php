@@ -1,8 +1,12 @@
+{{-- Halaman Tambah Kegiatan --}}
 @extends('layouts.admin')
 
 @section('title', 'Tambah Kegiatan')
 
+{{-- Konten utama halaman Tambah Kegiatan --}}
+
 @section('content')
+{{-- Form input data --}}
 <form class="card modal-page" method="POST" action="/simpan-kegiatan">
     @csrf
     <h2>Tambah Kegiatan Baru</h2>
@@ -11,6 +15,7 @@
     <div class="field" style="margin-top:20px">
         <label>Organisasi</label>
         <select name="id_organisasi" required>
+            {{-- Perulangan data untuk ditampilkan ke pengguna --}}
             @foreach($organisasi as $item)
                 <option value="{{ $item->id_organisasi }}">{{ $item->nama_organisasi }}</option>
             @endforeach

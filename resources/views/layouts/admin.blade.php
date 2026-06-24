@@ -1,3 +1,4 @@
+{{-- Halaman Admin --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -17,6 +18,8 @@
             </div>
         </div>
 
+        {{-- Navigasi utama aplikasi --}}
+
         <nav class="nav">
             <a class="{{ request()->is('dashboard-admin') ? 'active' : '' }}" href="/dashboard-admin"><span>🏠</span>Dashboard</a>
             <a class="{{ request()->is('profil-organisasi-admin') || request()->is('tambah-ukm') || request()->is('edit-organisasi/*') ? 'active' : '' }}" href="/profil-organisasi-admin"><span>🏢</span>Manajemen Data Organisasi</a>
@@ -29,11 +32,15 @@
         </div>
     </aside>
 
+    {{-- Area konten utama --}}
+
     <main class="main">
         <header class="topbar">
             <div class="user-chip"><b>AD</b><div><strong>Admin User</strong><span>Administrator</span></div></div>
         </header>
+        {{-- Section informasi halaman --}}
         <section class="content">
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
             @if(session('success'))
                 <div class="toast">{{ session('success') }}</div>
             @endif

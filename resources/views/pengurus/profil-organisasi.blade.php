@@ -1,6 +1,9 @@
+{{-- Halaman Profil Organisasi --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Profil Organisasi')
+
+{{-- Konten utama halaman Profil Organisasi --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
     <a class="btn primary" href="/edit-profil-organisasi">Edit Profil</a>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Informasi Dasar</h2>
@@ -27,6 +32,8 @@
         </div>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <div class="split">

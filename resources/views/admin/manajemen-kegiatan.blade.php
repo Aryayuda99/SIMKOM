@@ -1,6 +1,9 @@
+{{-- Halaman Manajemen Kegiatan --}}
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Kegiatan')
+
+{{-- Konten utama halaman Manajemen Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -11,11 +14,15 @@
     <a class="btn green" href="/tambah-kegiatan">+ Tambah Kegiatan</a>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
+    {{-- Form input data --}}
     <form method="GET" action="/manajemen-kegiatan-admin">
         <label>Pilih Organisasi</label>
         <select name="id_organisasi" onchange="this.form.submit()">
             <option value="">Pilih organisasi.</option>
+            {{-- Perulangan data untuk ditampilkan ke pengguna --}}
             @foreach($organisasi as $org)
                 <option value="{{ $org->id_organisasi }}" {{ request('id_organisasi') == $org->id_organisasi ? 'selected' : '' }}>
                     {{ $org->nama_organisasi }}
@@ -25,7 +32,10 @@
     </form>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
     @if(!request('id_organisasi'))
         <div class="empty">
             <div>

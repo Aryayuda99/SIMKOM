@@ -7,19 +7,23 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Menjalankan migration untuk membuat tabel antrean pekerjaan.
      */
     public function up(): void
     {
+        // Membuat tabel jobs untuk antrean pekerjaan background.
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('queue')->index();
+            // Payload menyimpan isi data sesi atau pekerjaan antrean.
             $table->longText('payload');
             $table->unsignedSmallInteger('attempts');
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
         });
+
+        // Membuat tabel job_batches untuk mengelompokkan antrean pekerjaan.
 
         Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -34,11 +38,14 @@ return new class extends Migration
             $table->integer('finished_at')->nullable();
         });
 
+        // Membuat tabel failed_jobs untuk mencatat pekerjaan antrean yang gagal.
+
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
             $table->string('connection');
             $table->string('queue');
+            // Payload menyimpan isi data sesi atau pekerjaan antrean.
             $table->longText('payload');
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
@@ -48,7 +55,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Membatalkan migration dengan menghapus tabel antrean pekerjaan.
      */
     public function down(): void
     {

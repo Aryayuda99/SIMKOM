@@ -1,6 +1,9 @@
+{{-- Halaman Forgot Password --}}
 @extends('layouts.app')
 
 @section('title', 'Hubungi Admin SIMKOM')
+
+{{-- Konten utama halaman Forgot Password --}}
 
 @section('content')
 <style>
@@ -163,7 +166,10 @@
     }
 </style>
 
+{{-- Area konten utama --}}
+
 <main class="login-screen">
+    {{-- Section informasi halaman --}}
     <section class="login-info">
         <div class="login-logo">S</div>
         <h1>SIMKOM</h1>
@@ -193,6 +199,8 @@
             </div>
         </div>
     </section>
+
+    {{-- Section informasi halaman --}}
 
     <section class="login-panel">
         <h2>Hubungi Admin</h2>

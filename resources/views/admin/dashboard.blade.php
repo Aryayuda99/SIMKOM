@@ -1,6 +1,9 @@
+{{-- Halaman Dashboard --}}
 @extends('layouts.admin')
 
 @section('title', 'Dashboard Admin')
+
+{{-- Konten utama halaman Dashboard --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="hero">
     <div class="hero-icon">SI</div>
     <div>
@@ -17,6 +22,8 @@
         <p class="subtitle">Sistem manajemen terpadu untuk mengelola organisasi mahasiswa, kegiatan, dan pengguna.</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid three">
     <a class="tile" href="/profil-organisasi-admin">
@@ -41,6 +48,8 @@
         </div>
     </a>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Fitur Admin</h2>

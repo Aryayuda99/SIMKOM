@@ -1,3 +1,4 @@
+{{-- Halaman Pengurus --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +17,8 @@
                 <span>Panel Pengurus</span>
             </div>
         </div>
+
+        {{-- Navigasi utama aplikasi --}}
 
         <nav class="nav">
             <a class="{{ request()->is('dashboard-pengurus') ? 'active' : '' }}" href="/dashboard-pengurus"><span>🏠</span>Dashboard</a>
@@ -36,11 +39,15 @@
         </div>
     </aside>
 
+    {{-- Area konten utama --}}
+
     <main class="main">
         <header class="topbar">
             <div class="user-chip"><b>PO</b><div><strong>Pengurus Organisasi</strong><span>BEM</span></div></div>
         </header>
+        {{-- Section informasi halaman --}}
         <section class="content">
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
             @if(session('success'))
                 <div class="toast">{{ session('success') }}</div>
             @endif

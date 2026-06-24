@@ -1,8 +1,13 @@
+{{-- Halaman Edit Transaksi --}}
 @extends('layouts.pengurus')
+
+{{-- Konten utama halaman Edit Transaksi --}}
 
 @section('content')
 
 <h1>Edit Transaksi</h1>
+
+{{-- Form input data --}}
 
 <form method="POST"
       action="/update-transaksi/{{ $transaksi->id_transaksi }}">
@@ -10,6 +15,7 @@
 
     <label>Kegiatan</label>
     <select name="id_kegiatan">
+        {{-- Perulangan data untuk ditampilkan ke pengguna --}}
         @foreach($kegiatan as $item)
             <option
                 value="{{ $item->id_kegiatan }}"

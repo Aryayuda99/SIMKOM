@@ -1,6 +1,9 @@
+{{-- Halaman Login --}}
 @extends('layouts.app')
 
 @section('title', 'Login SIMKOM')
+
+{{-- Konten utama halaman Login --}}
 
 @section('content')
 <style>
@@ -209,8 +212,12 @@
     }
 </style>
 
+{{-- Area konten utama --}}
+
 <main class="login-screen">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
 
     @if(session('error'))
         <script>
@@ -222,6 +229,7 @@
             });
         </script>
 @endif
+    {{-- Section informasi halaman --}}
     <section class="login-info">
         <div class="login-logo">S</div>
         <h1>SIMKOM</h1>
@@ -252,9 +260,13 @@
         </div>
     </section>
 
+    {{-- Section informasi halaman --}}
+
     <section class="login-panel">
         <h2>Selamat Datang</h2>
         <p>Masukkan identitas Anda untuk mengakses SIMKOM</p>
+
+        {{-- Form input data --}}
 
         <form method="POST" action="/login">
             @csrf

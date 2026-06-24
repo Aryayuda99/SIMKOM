@@ -1,14 +1,21 @@
+{{-- Halaman Proposal Lpj --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Proposal & LPJ')
 
+{{-- Konten utama halaman Proposal Lpj --}}
+
 @section('content')
+
+{{-- Kondisi tampilan berdasarkan data yang tersedia --}}
 
 @if ($errors->any())
 <script>
     alert('{{ $errors->first() }}');
 </script>
 @endif
+
+{{-- Kondisi tampilan berdasarkan data yang tersedia --}}
 
 @if(session('error'))
 <script>
@@ -22,9 +29,13 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Pusat Dokumen</h2>
     <p class="subtitle">Upload dan kelola dokumen kegiatan</p>
+
+    {{-- Form input data --}}
 
     <form method="POST" action="/upload-dokumen" enctype="multipart/form-data">
         @csrf
@@ -32,6 +43,7 @@
             <div class="field">
                 <label>Kegiatan</label>
                 <select name="id_kegiatan" required>
+                    {{-- Perulangan data untuk ditampilkan ke pengguna --}}
                     @foreach($kegiatan as $item)
                         <option value="{{ $item->id_kegiatan }}">{{ $item->nama_kegiatan }}</option>
                     @endforeach
@@ -66,6 +78,8 @@
     </form>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Daftar Dokumen</h2>
     <div class="list" style="margin-top:20px">
@@ -94,6 +108,8 @@
         @endforelse
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="notice">
     <div class="hero-icon">📄</div>

@@ -1,8 +1,12 @@
+{{-- Halaman Ubah Role --}}
 @extends('layouts.admin')
 
 @section('title', 'Ubah Role Anggota')
 
+{{-- Konten utama halaman Ubah Role --}}
+
 @section('content')
+{{-- Form input data --}}
 <form class="card modal-page" method="POST" action="/simpan-role">
     @csrf
     <input type="hidden" name="id_user" value="{{ $user->id_user }}">
@@ -17,6 +21,7 @@
     <div class="field">
         <label>Role Baru</label>
         <select name="role">
+            {{-- Perulangan data untuk ditampilkan ke pengguna --}}
             @foreach(['admin', 'pengurus', 'pembina', 'anggota', 'mahasiswa'] as $role)
                 <option value="{{ $role }}" {{ ($user->role ?? '') === $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
             @endforeach

@@ -1,6 +1,9 @@
+{{-- Halaman Edit Profil Organisasi --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Edit Profil Organisasi')
+
+{{-- Konten utama halaman Edit Profil Organisasi --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Pengurus hanya dapat mengubah informasi dasar organisasi</p>
     </div>
 </div>
+
+{{-- Form input data --}}
 
 <form class="card" method="POST" action="/update-profil-organisasi">
     @csrf
@@ -31,6 +36,8 @@
             <input name="periode_kepengurusan" value="{{ $organisasi->periode_kepengurusan ?? '' }}" required>
         </div>
     </div>
+
+    {{-- Section informasi halaman --}}
 
     <section class="notice" style="margin:6px 0 0">
         <div class="hero-icon">Info</div>

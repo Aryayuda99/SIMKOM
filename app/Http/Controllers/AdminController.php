@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    // Menampilkan halaman dashboard sesuai peran pengguna dan mengirim data ringkasan ke view.
     public function dashboard()
     {
         return view('admin.dashboard');
     }
+
+    // Menampilkan profil organisasi dengan data organisasi yang relevan.
 
     public function profilOrganisasi()
 {
@@ -24,11 +27,14 @@ class AdminController extends Controller
     );
 }
 
+// Menampilkan form edit organisasi berdasarkan ID organisasi yang dipilih.
+
 public function formEditOrganisasi($id)
 {
     $organisasi = DB::table(
         'data_organisasi'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_organisasi',
         $id
@@ -41,10 +47,14 @@ public function formEditOrganisasi($id)
     );
 }
 
+// Menampilkan form tambah organisasi baru.
+
 public function formTambahOrganisasi()
 {
     return view('admin.tambah-ukm');
 }
+
+// Memvalidasi input dan menyimpan data organisasi baru ke database.
 
 public function simpanOrganisasi(Request $request)
 {
@@ -82,6 +92,7 @@ public function simpanOrganisasi(Request $request)
             STR_PAD_LEFT
         );
 
+    // Mengakses tabel data_organisasi untuk informasi profil organisasi.
     DB::table('data_organisasi')
         ->insert([
 
@@ -110,6 +121,8 @@ public function simpanOrganisasi(Request $request)
     );
 }
 
+// Memvalidasi input dan memperbarui data organisasi pada database.
+
 public function updateOrganisasi(Request $request)
 {
     $request->validate([
@@ -119,7 +132,9 @@ public function updateOrganisasi(Request $request)
         'misi' => 'required'
     ]);
 
+    // Mengakses tabel data_organisasi untuk informasi profil organisasi.
     DB::table('data_organisasi')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $request->id_organisasi
@@ -145,26 +160,36 @@ public function updateOrganisasi(Request $request)
     );
 }
 
+// Menghapus organisasi beserta data terkait tanpa menyisakan relasi utama.
+
 public function hapusOrganisasi($id)
 {
     DB::transaction(function () use ($id) {
+        // Mengakses tabel kegiatan untuk data kegiatan organisasi.
         $kegiatanIds = DB::table('kegiatan')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->pluck('id_kegiatan');
 
         $userIds = collect()
             ->merge(
+                // Mengakses tabel anggota untuk data keanggotaan organisasi.
                 DB::table('anggota')
+                    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                     ->where('id_organisasi', $id)
                     ->pluck('id_user')
             )
             ->merge(
+                // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
                 DB::table('pengurus')
+                    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                     ->where('id_organisasi', $id)
                     ->pluck('id_user')
             )
             ->merge(
+                // Mengakses tabel pembina untuk menentukan organisasi yang dibina user.
                 DB::table('pembina')
+                    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                     ->where('id_organisasi', $id)
                     ->pluck('id_user')
             )
@@ -173,52 +198,74 @@ public function hapusOrganisasi($id)
             ->values();
 
         if ($kegiatanIds->isNotEmpty()) {
+            // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
             DB::table('keuangan')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->whereIn('id_kegiatan', $kegiatanIds)
                 ->delete();
 
+            // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
             DB::table('dokumen_kegiatan')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->whereIn('id_kegiatan', $kegiatanIds)
                 ->delete();
 
+            // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
             DB::table('pendaftaran_kegiatan')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->whereIn('id_kegiatan', $kegiatanIds)
                 ->delete();
 
+            // Mengakses tabel riwayat_kegiatan untuk data kegiatan yang sudah selesai.
             DB::table('riwayat_kegiatan')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->whereIn('id_kegiatan', $kegiatanIds)
                 ->delete();
         }
 
+        // Mengakses tabel kegiatan untuk data kegiatan organisasi.
         DB::table('kegiatan')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
 
+        // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
         DB::table('pendaftaran_anggota_online')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
 
+        // Mengakses tabel anggota untuk data keanggotaan organisasi.
         DB::table('anggota')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
 
+        // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
         DB::table('pengurus')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
 
+        // Mengakses tabel pembina untuk menentukan organisasi yang dibina user.
         DB::table('pembina')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
 
         if ($userIds->isNotEmpty()) {
+            // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
             DB::table('users')
+                // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
                 ->whereIn('id_user', $userIds)
                 ->update([
                     'role' => 'mahasiswa'
                 ]);
         }
 
+        // Mengakses tabel data_organisasi untuk informasi profil organisasi.
         DB::table('data_organisasi')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where('id_organisasi', $id)
             ->delete();
     });
@@ -231,6 +278,8 @@ public function hapusOrganisasi($id)
     );
 }
 
+// Menampilkan data anggota atau pendaftaran anggota untuk kebutuhan manajemen.
+
 public function manajemenAnggota(Request $request)
 {
     $organisasi = DB::table(
@@ -241,7 +290,9 @@ public function manajemenAnggota(Request $request)
 
     if ($request->id_organisasi)
     {
+        // Mengakses tabel anggota untuk data keanggotaan organisasi.
         $anggota = DB::table('anggota')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'id_organisasi',
                 $request->id_organisasi
@@ -258,9 +309,13 @@ public function manajemenAnggota(Request $request)
     );
 }
 
+// Menampilkan form perubahan role pengguna berdasarkan ID user.
+
 public function formUbahRole($id)
 {
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     $user = DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $id
@@ -273,9 +328,13 @@ public function formUbahRole($id)
     );
 }
 
+// Menyimpan perubahan role pengguna ke tabel users.
+
 public function simpanRole(Request $request)
 {
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $request->id_user
@@ -292,6 +351,8 @@ public function simpanRole(Request $request)
     );
 }
 
+// Menampilkan daftar kegiatan sesuai organisasi yang sedang dikelola.
+
 public function manajemenKegiatan(Request $request)
 {
     $organisasi = DB::table(
@@ -302,7 +363,9 @@ public function manajemenKegiatan(Request $request)
 
     if($request->id_organisasi)
     {
+        // Mengakses tabel kegiatan untuk data kegiatan organisasi.
         $kegiatan = DB::table('kegiatan')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'id_organisasi',
                 $request->id_organisasi
@@ -319,6 +382,8 @@ public function manajemenKegiatan(Request $request)
     );
 }
 
+// Menampilkan form tambah kegiatan dan data organisasi pendukung.
+
 public function formTambahKegiatan()
 {
     $organisasi = DB::table(
@@ -330,6 +395,8 @@ public function formTambahKegiatan()
         compact('organisasi')
     );
 }
+
+// Menyimpan data kegiatan baru ke database.
 
 public function simpanKegiatan(Request $request)
 {
@@ -346,6 +413,7 @@ public function simpanKegiatan(Request $request)
             STR_PAD_LEFT
         );
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     DB::table('kegiatan')
         ->insert([
 
@@ -374,9 +442,13 @@ public function simpanKegiatan(Request $request)
     );
 }
 
+// Menampilkan form edit kegiatan berdasarkan ID kegiatan.
+
 public function formEditKegiatan($id)
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
@@ -389,9 +461,13 @@ public function formEditKegiatan($id)
     );
 }
 
+// Memperbarui data kegiatan berdasarkan input dari form.
+
 public function updateKegiatan(Request $request)
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $request->id_kegiatan
@@ -411,21 +487,31 @@ public function updateKegiatan(Request $request)
     );
 }
 
+// Menghapus kegiatan beserta data pendukung yang berkaitan.
+
 public function hapusKegiatan($id)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     DB::table('keuangan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->delete();
 
+    // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
     DB::table('dokumen_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->delete();
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->delete();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_kegiatan', $id)
         ->delete();
 
@@ -434,9 +520,13 @@ public function hapusKegiatan($id)
     );
 }
 
+// Menampilkan form reset password pengguna.
+
 public function formResetPassword($id)
 {
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     $user = DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $id
@@ -449,9 +539,13 @@ public function formResetPassword($id)
     );
 }
 
+// Menyimpan password baru pengguna ke tabel users.
+
 public function simpanPassword(Request $request)
 {
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $request->id_user

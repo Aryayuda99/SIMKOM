@@ -1,3 +1,4 @@
+{{-- Halaman Anggota --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +17,7 @@
                 <span>Portal Anggota</span>
             </div>
         </div>
+        {{-- Navigasi utama aplikasi --}}
         <nav class="nav">
             <a class="{{ request()->is('dashboard-anggota') ? 'active' : '' }}" href="/dashboard-anggota"><span>🏠</span>Dashboard</a>
             <a class="{{ request()->is('anggota/kegiatan') ? 'active' : '' }}" href="/anggota/kegiatan"><span>📋</span>Jelajahi Kegiatan</a>
@@ -26,6 +28,8 @@
             <a href="/logout" class="logout">&#8617; Logout</a>
         </div>
     </aside>
+
+    {{-- Area konten utama --}}
 
     <main class="main">
         <header class="topbar">
@@ -38,7 +42,9 @@
     </div>
 </div>    
     </header>
+        {{-- Section informasi halaman --}}
         <section class="content">
+            {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
             @if(session('success'))
                 <div class="toast">{{ session('success') }}</div>
             @endif

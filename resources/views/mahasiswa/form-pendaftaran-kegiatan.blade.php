@@ -1,8 +1,12 @@
+{{-- Halaman Form Pendaftaran Kegiatan --}}
 @extends('layouts.mahasiswa')
 
 @section('title', 'Formulir Pendaftaran Kegiatan')
 
+{{-- Konten utama halaman Form Pendaftaran Kegiatan --}}
+
 @section('content')
+{{-- Form input data --}}
 <form class="card modal-page" method="POST" action="/pendaftaran-kegiatan" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">

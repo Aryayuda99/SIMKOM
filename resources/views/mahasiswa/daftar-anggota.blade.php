@@ -1,6 +1,9 @@
+{{-- Halaman Daftar Anggota --}}
 @extends('layouts.mahasiswa')
 
 @section('title', 'Pendaftaran Anggota')
+
+{{-- Konten utama halaman Daftar Anggota --}}
 
 @section('content')
 <div class="page-title">
@@ -10,6 +13,8 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="notice">
     <div class="hero-icon">✓</div>
     <div>
@@ -17,6 +22,8 @@
         <p class="subtitle">Mahasiswa aktif, mengisi formulir lengkap, dan bersedia mengikuti kegiatan organisasi.</p>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid three">
     @forelse($organisasi as $item)
@@ -27,6 +34,7 @@
             <a class="btn primary" href="/pendaftaran-anggota/{{ $item->id_organisasi }}">Daftar Sekarang</a>
         </article>
     @empty
+        {{-- Section informasi halaman --}}
         <section class="card empty"><p>Belum ada organisasi.</p></section>
     @endforelse
 </section>

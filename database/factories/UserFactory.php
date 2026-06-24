@@ -8,23 +8,26 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
+ * Factory untuk membuat data dummy akun user.
+ *
  * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * Password default yang digunakan ulang oleh factory.
      */
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
+     * Menentukan nilai default atribut user saat factory dijalankan.
      *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
+            // Nama, email, dan token dibuat otomatis untuk data dummy.
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -34,7 +37,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Membuat kondisi user dengan email yang belum terverifikasi.
      */
     public function unverified(): static
     {

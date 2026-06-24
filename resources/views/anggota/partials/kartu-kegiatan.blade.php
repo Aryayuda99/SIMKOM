@@ -1,3 +1,4 @@
+{{-- Halaman Kartu Kegiatan --}}
 @php
     $kuota = (int) ($item->kuota_peserta ?? 0);
     $terisi = (int) ($item->jumlah_peserta ?? 0);
@@ -44,6 +45,8 @@
             <span style="width:{{ $persen }}%"></span>
         </div>
     </div>
+
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
 
     @if($slotPenuh)
         <button class="btn" style="width:100%;margin-top:16px" type="button" disabled>Slot Penuh</button>

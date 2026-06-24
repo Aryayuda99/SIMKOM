@@ -1,6 +1,9 @@
+{{-- Halaman Riwayat Kegiatan --}}
 @extends('layouts.pembina')
 
 @section('title', 'Riwayat Kegiatan')
+
+{{-- Konten utama halaman Riwayat Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -10,15 +13,20 @@
     </div>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Timeline Kegiatan</h2>
     <p class="subtitle">Riwayat kegiatan yang telah dilaksanakan dengan laporan lengkap</p>
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
     @if(session('success'))
         <div class="notice" style="background:#ecfdf5;border-color:#bbf7d0;margin-top:18px">{{ session('success') }}</div>
     @endif
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
     @if(session('error'))
         <div class="notice" style="background:#fef2f2;border-color:#fecaca;margin-top:18px">{{ session('error') }}</div>
     @endif
+    {{-- Kondisi tampilan berdasarkan data yang tersedia --}}
     @if($errors->any())
         <div class="notice" style="background:#fef2f2;border-color:#fecaca;margin-top:18px">{{ $errors->first() }}</div>
     @endif
@@ -36,6 +44,7 @@
                     <span>Status<br><strong>{{ $item->status }}</strong></span>
                     <span>Biaya<br><strong>Rp {{ number_format($item->biaya_pendaftaran ?? 0, 0, ',', '.') }}</strong></span>
                 </div>
+                {{-- Form input data --}}
                 <form method="POST" action="/riwayat-kegiatan-pembina/evaluasi/{{ $item->id_riwayat }}" style="margin-top:16px">
                     @csrf
                     <label for="evaluasi-{{ $item->id_riwayat }}">Evaluasi Pembina</label>

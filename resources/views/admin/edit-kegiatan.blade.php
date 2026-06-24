@@ -1,8 +1,12 @@
+{{-- Halaman Edit Kegiatan --}}
 @extends('layouts.admin')
 
 @section('title', 'Edit Kegiatan')
 
+{{-- Konten utama halaman Edit Kegiatan --}}
+
 @section('content')
+{{-- Form input data --}}
 <form class="card modal-page" method="POST" action="/update-kegiatan-admin">
     @csrf
     <input type="hidden" name="id_kegiatan" value="{{ $kegiatan->id_kegiatan }}">

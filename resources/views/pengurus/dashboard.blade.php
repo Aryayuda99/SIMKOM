@@ -1,6 +1,9 @@
+{{-- Halaman Dashboard --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Dashboard Pengurus')
+
+{{-- Konten utama halaman Dashboard --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Selamat datang kembali! Berikut ringkasan organisasi Anda</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="grid two">
     <div class="card stat">
@@ -21,6 +26,8 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Keuangan Kegiatan Terbaru</h2>
     <p class="subtitle">{{ optional($kegiatanAktif->first())->nama_kegiatan ?? 'Belum ada kegiatan' }}</p>
@@ -30,6 +37,8 @@
         <div class="notice" style="margin:0"><div class="tile-icon">💰</div><div><p class="muted">Sisa</p><h3 class="blue">Rp {{ number_format($saldo, 0, ',', '.') }}</h3></div></div>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Kegiatan Aktif</h2>

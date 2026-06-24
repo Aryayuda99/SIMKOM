@@ -1,6 +1,9 @@
+{{-- Halaman Profil Organisasi --}}
 @extends('layouts.admin')
 
 @section('title', 'Profil Organisasi')
+
+{{-- Konten utama halaman Profil Organisasi --}}
 
 @section('content')
 <div class="page-title">
@@ -13,6 +16,7 @@
 
 <div class="grid two">
     @forelse($organisasi as $item)
+        {{-- Section informasi halaman --}}
         <section class="card">
             <div class="split">
                 <div class="actions">
@@ -37,6 +41,7 @@
             </div>
         </section>
     @empty
+        {{-- Section informasi halaman --}}
         <section class="card empty">
             <div>
                 <h2>Belum ada organisasi</h2>

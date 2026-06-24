@@ -1,6 +1,9 @@
+{{-- Halaman Dokumen Proposal Lpj --}}
 @extends('layouts.pembina')
 
 @section('title', 'Dokumen Proposal & LPJ')
+
+{{-- Konten utama halaman Dokumen Proposal Lpj --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Unduh proposal dan LPJ organisasi</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Daftar Dokumen</h2>

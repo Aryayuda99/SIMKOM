@@ -7,36 +7,45 @@ use Illuminate\Http\Request;
 
 class PengurusController extends Controller
 {
+    // Menghitung ringkasan pemasukan, pengeluaran, dan saldo organisasi.
     private function ringkasanKeuanganOrganisasi($idOrganisasi)
     {
+        // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
         $totalPemasukan = DB::table('keuangan')
+            // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
             ->join(
                 'kegiatan',
                 'keuangan.id_kegiatan',
                 '=',
                 'kegiatan.id_kegiatan'
             )
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'kegiatan.id_organisasi',
                 $idOrganisasi
             )
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'keuangan.jenis_transaksi',
                 'pemasukan'
             )
             ->sum('keuangan.jumlah');
 
+        // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
         $totalPengeluaran = DB::table('keuangan')
+            // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
             ->join(
                 'kegiatan',
                 'keuangan.id_kegiatan',
                 '=',
                 'kegiatan.id_kegiatan'
             )
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'kegiatan.id_organisasi',
                 $idOrganisasi
             )
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'keuangan.jenis_transaksi',
                 'pengeluaran'
@@ -50,26 +59,34 @@ class PengurusController extends Controller
         ];
     }
 
+    // Menampilkan halaman dashboard sesuai peran pengguna dan mengirim data ringkasan ke view.
+
     public function dashboard()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'data_organisasi',
             'pengurus.id_organisasi',
             '=',
             'data_organisasi.id_organisasi'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'pengurus.id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatanAktif = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
+        // OrderBy mengurutkan data agar tampil sesuai urutan yang dibutuhkan.
         ->orderBy(
             'tanggal_pelaksanaan',
             'asc'
@@ -92,19 +109,25 @@ class PengurusController extends Controller
     );
 }
 
+// Menampilkan profil organisasi dengan data organisasi yang relevan.
+
 public function profilOrganisasi()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $organisasi = DB::table('pengurus')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'data_organisasi',
             'pengurus.id_organisasi',
             '=',
             'data_organisasi.id_organisasi'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'pengurus.id_user',
             session('id_user')
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select('data_organisasi.*')
         ->first();
 
@@ -114,19 +137,25 @@ public function profilOrganisasi()
     );
 }
 
+// Menampilkan form edit profil organisasi milik pengurus yang sedang login.
+
 public function formEditProfilOrganisasi()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $organisasi = DB::table('pengurus')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'data_organisasi',
             'pengurus.id_organisasi',
             '=',
             'data_organisasi.id_organisasi'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'pengurus.id_user',
             session('id_user')
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select('data_organisasi.*')
         ->first();
 
@@ -136,16 +165,22 @@ public function formEditProfilOrganisasi()
     );
 }
 
+// Memperbarui profil organisasi milik pengurus yang sedang login.
+
 public function updateProfilOrganisasi(Request $request)
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel data_organisasi untuk informasi profil organisasi.
     DB::table('data_organisasi')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
@@ -162,9 +197,13 @@ public function updateProfilOrganisasi(Request $request)
         );
 }
 
+// Menampilkan data anggota atau pendaftaran anggota untuk kebutuhan manajemen.
+
 public function manajemenAnggota()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
@@ -174,17 +213,21 @@ public function manajemenAnggota()
     $pendaftaran = DB::table(
         'pendaftaran_anggota_online'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_organisasi',
         $pengurus->id_organisasi
     )
     ->get();
 
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     $anggota = DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'id_anggota',
             'id_user',
@@ -206,11 +249,14 @@ public function manajemenAnggota()
     );
 }
 
+// Menerima pendaftaran anggota, membuat data anggota, memperbarui role, dan menghapus data pendaftaran.
+
 public function terimaAnggota($id)
 {
     $pendaftaran = DB::table(
         'pendaftaran_anggota_online'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_pendaftaranA',
         $id
@@ -221,6 +267,7 @@ public function terimaAnggota($id)
         $pendaftaran->id_organisasi .
         $pendaftaran->id_user;
 
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     DB::table('anggota')
     ->insert([
 
@@ -242,7 +289,9 @@ public function terimaAnggota($id)
 
     ]);
 
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     DB::table('users')
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_user',
         $pendaftaran->id_user
@@ -253,9 +302,11 @@ public function terimaAnggota($id)
 
     ]);
 
+    // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
     DB::table(
         'pendaftaran_anggota_online'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_pendaftaranA',
         $id
@@ -266,12 +317,16 @@ public function terimaAnggota($id)
         '/manajemen-anggota'
     );
 }
+
+// Menolak pendaftaran anggota dengan menghapus data pendaftaran online.
 
 public function tolakAnggota($id)
 {
+    // Mengakses tabel pendaftaran_anggota_online untuk data calon anggota.
     DB::table(
         'pendaftaran_anggota_online'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_pendaftaranA',
         $id
@@ -283,16 +338,22 @@ public function tolakAnggota($id)
     );
 }
 
+// Menonaktifkan status anggota dan mengembalikan role user menjadi mahasiswa.
+
 public function nonaktifkanAnggota($id)
 {
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     $anggota = DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_anggota',
             $id
         )
         ->first();
 
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_anggota',
             $id
@@ -301,7 +362,9 @@ public function nonaktifkanAnggota($id)
             'status_keanggotaan' => 'nonaktif'
         ]);
 
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $anggota->id_user
@@ -318,16 +381,22 @@ public function nonaktifkanAnggota($id)
     );
 }
 
+// Mengaktifkan kembali status anggota dan mengubah role user menjadi anggota.
+
 public function aktifkanAnggota($id)
 {
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     $anggota = DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_anggota',
             $id
         )
         ->first();
 
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_anggota',
             $id
@@ -336,7 +405,9 @@ public function aktifkanAnggota($id)
             'status_keanggotaan' => 'aktif'
         ]);
 
+    // Mengakses tabel users untuk data akun, role, dan autentikasi pengguna.
     DB::table('users')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             $anggota->id_user
@@ -353,16 +424,22 @@ public function aktifkanAnggota($id)
     );
 }
 
+// Menampilkan daftar kegiatan sesuai organisasi yang sedang dikelola.
+
 public function manajemenKegiatan()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
@@ -375,30 +452,39 @@ public function manajemenKegiatan()
     );
 }
 
+// Menampilkan detail kegiatan dan daftar pendaftar untuk organisasi pengurus.
+
 public function detailKegiatan($id)
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'data_organisasi',
             'kegiatan.id_organisasi',
             '=',
             'data_organisasi.id_organisasi'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_kegiatan',
             $id
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $pengurus->id_organisasi
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'kegiatan.*',
             'data_organisasi.nama_organisasi'
@@ -409,7 +495,9 @@ public function detailKegiatan($id)
         abort(404);
     }
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     $pendaftar = DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
@@ -425,30 +513,39 @@ public function detailKegiatan($id)
     );
 }
 
+// Menghapus peserta dari kegiatan setelah memastikan kegiatan milik organisasi pengurus.
+
 public function hapusPesertaKegiatan($id)
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     $pendaftaran = DB::table('pendaftaran_kegiatan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'pendaftaran_kegiatan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'pendaftaran_kegiatan.id_pendaftaran',
             $id
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $pengurus->id_organisasi
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'pendaftaran_kegiatan.id_kegiatan'
         )
@@ -458,7 +555,9 @@ public function hapusPesertaKegiatan($id)
         abort(404);
     }
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_pendaftaran',
             $id
@@ -473,9 +572,13 @@ public function hapusPesertaKegiatan($id)
     );
 }
 
+// Menampilkan form edit kegiatan berdasarkan ID kegiatan.
+
 public function formEditKegiatan($id)
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
@@ -488,9 +591,13 @@ public function formEditKegiatan($id)
     );
 }
 
+// Memperbarui data kegiatan berdasarkan input dari form.
+
 public function updateKegiatan(Request $request)
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $request->id_kegiatan
@@ -519,9 +626,13 @@ public function updateKegiatan(Request $request)
     );
 }
 
+// Memindahkan kegiatan ke riwayat, menghitung peserta, dan mengosongkan data pelaksanaan aktif.
+
 public function selesaikanKegiatan($id)
 {
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
@@ -544,12 +655,14 @@ public function selesaikanKegiatan($id)
     $jumlahPeserta = DB::table(
         'pendaftaran_kegiatan'
     )
+    // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
     ->where(
         'id_kegiatan',
         $id
     )
     ->count();
 
+    // Mengakses tabel riwayat_kegiatan untuk data kegiatan yang sudah selesai.
     DB::table('riwayat_kegiatan')
         ->insert([
 
@@ -573,14 +686,18 @@ public function selesaikanKegiatan($id)
 
         ]);
 
+    // Mengakses tabel pendaftaran_kegiatan untuk data peserta kegiatan.
     DB::table('pendaftaran_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
         )
         ->delete();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_kegiatan',
             $id
@@ -600,15 +717,21 @@ public function selesaikanKegiatan($id)
 }
 
 
+// Menampilkan riwayat kegiatan beserta informasi kegiatan dan organisasi terkait.
+
+
 public function riwayatKegiatan()
 {
+    // Mengakses tabel riwayat_kegiatan untuk data kegiatan yang sudah selesai.
     $riwayat = DB::table('riwayat_kegiatan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'riwayat_kegiatan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'riwayat_kegiatan.*',
             'kegiatan.nama_kegiatan',
@@ -623,61 +746,150 @@ public function riwayatKegiatan()
     );
 }
 
-public function keuangan()
+// Menampilkan halaman keuangan berisi kegiatan, transaksi, dan ringkasan saldo organisasi.
+
+public function keuangan(Request $request)
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Pengambilan data kegiatan untuk pilihan filter dan form tambah transaksi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
         ->get();
 
-    $transaksi = DB::table('keuangan')
+    $filter = [
+        'bulan' => $request->bulan,
+        'tahun' => $request->tahun,
+        'id_kegiatan' => $request->id_kegiatan,
+    ];
+
+    // Mengakses tahun transaksi untuk pilihan filter tahunan.
+    $tahunTransaksi = DB::table('keuangan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'keuangan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $pengurus->id_organisasi
         )
+        ->selectRaw('YEAR(keuangan.tanggal_transaksi) as tahun')
+        ->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun');
+
+    // Filter transaksi berdasarkan bulan, tahun, dan kegiatan jika dipilih.
+    $queryTransaksi = DB::table('keuangan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
+        ->join(
+            'kegiatan',
+            'keuangan.id_kegiatan',
+            '=',
+            'kegiatan.id_kegiatan'
+        )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
+        ->where(
+            'kegiatan.id_organisasi',
+            $pengurus->id_organisasi
+        );
+
+    if ($filter['bulan']) {
+        $queryTransaksi->whereMonth(
+            'keuangan.tanggal_transaksi',
+            $filter['bulan']
+        );
+    }
+
+    if ($filter['tahun']) {
+        $queryTransaksi->whereYear(
+            'keuangan.tanggal_transaksi',
+            $filter['tahun']
+        );
+    }
+
+    if ($filter['id_kegiatan']) {
+        $queryTransaksi->where(
+            'keuangan.id_kegiatan',
+            $filter['id_kegiatan']
+        );
+    }
+
+    $transaksi = $queryTransaksi
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'keuangan.*',
             'kegiatan.nama_kegiatan'
         )
+        // OrderBy mengurutkan data agar tampil sesuai urutan yang dibutuhkan.
         ->orderBy(
             'tanggal_transaksi',
             'desc'
         )
         ->get();
 
-    $ringkasanKeuangan = $this->ringkasanKeuanganOrganisasi(
-        $pengurus->id_organisasi
+    // Perhitungan pemasukan mengikuti transaksi yang sudah difilter.
+    $totalPemasukan = $transaksi
+        ->where('jenis_transaksi', 'pemasukan')
+        ->sum('jumlah');
+
+    // Perhitungan pengeluaran mengikuti transaksi yang sudah difilter.
+    $totalPengeluaran = $transaksi
+        ->where('jenis_transaksi', 'pengeluaran')
+        ->sum('jumlah');
+
+    // Perhitungan saldo dari total pemasukan dikurangi total pengeluaran terfilter.
+    $saldo = $totalPemasukan - $totalPengeluaran;
+
+    $namaBulan = array(
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember',
     );
 
     return view(
     'pengurus.keuangan',
-    array_merge(
-        compact(
-            'kegiatan',
-            'transaksi'
-        ),
-        $ringkasanKeuangan
+    compact(
+        'kegiatan',
+        'transaksi',
+        'totalPemasukan',
+        'totalPengeluaran',
+        'saldo',
+        'filter',
+        'namaBulan',
+        'tahunTransaksi'
     )
 );
 }
 
+// Membuat ID transaksi dan menyimpan transaksi keuangan baru.
+
 public function tambahTransaksi(Request $request)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     $jumlah = DB::table('keuangan')
         ->count();
 
@@ -690,6 +902,7 @@ public function tambahTransaksi(Request $request)
             STR_PAD_LEFT
         );
 
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     DB::table('keuangan')
         ->insert([
 
@@ -719,9 +932,13 @@ public function tambahTransaksi(Request $request)
     );
 }
 
+// Menghapus transaksi keuangan berdasarkan ID transaksi.
+
 public function hapusTransaksi($id)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     DB::table('keuangan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where('id_transaksi', $id)
         ->delete();
 
@@ -732,15 +949,20 @@ public function hapusTransaksi($id)
         );
 }
 
+// Menampilkan form edit transaksi beserta daftar kegiatan.
+
 public function editTransaksi($id)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     $transaksi = DB::table('keuangan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_transaksi',
             $id
         )
         ->first();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
         ->get();
 
@@ -753,9 +975,13 @@ public function editTransaksi($id)
     );
 }
 
+// Memperbarui data transaksi keuangan berdasarkan input form.
+
 public function updateTransaksi(Request $request, $id)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     DB::table('keuangan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_transaksi',
             $id
@@ -783,29 +1009,38 @@ public function updateTransaksi(Request $request, $id)
         );
 }
 
+// Menampilkan daftar kegiatan dan dokumen proposal, LPJ, atau dokumentasi.
+
 public function proposalLpj()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
         ->get();
 
+    // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
     $dokumen = DB::table('dokumen_kegiatan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'dokumen_kegiatan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'dokumen_kegiatan.*',
             'kegiatan.nama_kegiatan'
@@ -820,6 +1055,8 @@ public function proposalLpj()
         )
     );
 }
+
+// Memvalidasi file, mengunggah dokumen, dan menyimpan metadata dokumen kegiatan.
 
 public function uploadDokumen(Request $request)
 {
@@ -864,6 +1101,7 @@ if (in_array($request->jenis, ['Proposal', 'LPJ'])) {
             STR_PAD_LEFT
         );
 
+    // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
     DB::table('dokumen_kegiatan')
         ->insert([
 
@@ -894,9 +1132,13 @@ if (in_array($request->jenis, ['Proposal', 'LPJ'])) {
     );
 }
 
+// Menghapus file dokumen dari folder upload dan menghapus datanya dari database.
+
 public function hapusDokumen($id)
 {
+    // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
     $dokumen = DB::table('dokumen_kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_dokumen',
             $id
@@ -916,7 +1158,9 @@ public function hapusDokumen($id)
 
         }
 
+        // Mengakses tabel dokumen_kegiatan untuk metadata dokumen kegiatan.
         DB::table('dokumen_kegiatan')
+            // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
             ->where(
                 'id_dokumen',
                 $id
@@ -932,40 +1176,52 @@ public function hapusDokumen($id)
     );
 }
 
+// Menampilkan halaman ekspor laporan anggota, kegiatan, dan keuangan organisasi.
+
 public function eksporLaporan()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
         )
         ->first();
 
+    // Mengakses tabel anggota untuk data keanggotaan organisasi.
     $anggota = DB::table('anggota')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
         ->get();
 
+    // Mengakses tabel kegiatan untuk data kegiatan organisasi.
     $kegiatan = DB::table('kegiatan')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_organisasi',
             $pengurus->id_organisasi
         )
         ->get();
 
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     $keuangan = DB::table('keuangan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'keuangan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $pengurus->id_organisasi
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'keuangan.*',
             'kegiatan.nama_kegiatan'
@@ -982,9 +1238,13 @@ public function eksporLaporan()
     );
 }
 
+// Mengambil ID organisasi pengurus yang sedang login dari session.
+
 private function idOrganisasiPengurus()
 {
+    // Mengakses tabel pengurus untuk menentukan organisasi yang dikelola user.
     $pengurus = DB::table('pengurus')
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'id_user',
             session('id_user')
@@ -994,12 +1254,16 @@ private function idOrganisasiPengurus()
     return $pengurus->id_organisasi;
 }
 
+// Mengubah kode periode laporan menjadi label yang mudah dibaca.
+
 private function labelPeriode($periode)
 {
     return $periode === 'tahun'
         ? 'Tahun Ini'
         : 'Bulan Ini';
 }
+
+// Menerapkan filter bulan atau tahun pada query laporan.
 
 private function terapkanPeriode($query, $kolomTanggal, $periode)
 {
@@ -1011,29 +1275,37 @@ private function terapkanPeriode($query, $kolomTanggal, $periode)
     }
 
     return $query
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->whereYear(
             $kolomTanggal,
             now()->year
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->whereMonth(
             $kolomTanggal,
             now()->month
         );
 }
 
+// Mengambil data riwayat kegiatan untuk kebutuhan laporan berdasarkan periode.
+
 private function dataLaporanKegiatan($periode)
 {
+    // Mengakses tabel riwayat_kegiatan untuk data kegiatan yang sudah selesai.
     $query = DB::table('riwayat_kegiatan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'riwayat_kegiatan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $this->idOrganisasiPengurus()
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'riwayat_kegiatan.*',
             'kegiatan.nama_kegiatan',
@@ -1046,6 +1318,7 @@ private function dataLaporanKegiatan($periode)
         'riwayat_kegiatan.tanggal_selesai',
         $periode
     )
+    // OrderBy mengurutkan data agar tampil sesuai urutan yang dibutuhkan.
     ->orderBy(
         'riwayat_kegiatan.tanggal_selesai',
         'desc'
@@ -1053,19 +1326,25 @@ private function dataLaporanKegiatan($periode)
     ->get();
 }
 
+// Mengambil data transaksi keuangan untuk kebutuhan laporan berdasarkan periode.
+
 private function dataLaporanKeuangan($periode)
 {
+    // Mengakses tabel keuangan untuk data transaksi pemasukan dan pengeluaran.
     $query = DB::table('keuangan')
+        // Join digunakan untuk menggabungkan data dari tabel yang saling berelasi.
         ->join(
             'kegiatan',
             'keuangan.id_kegiatan',
             '=',
             'kegiatan.id_kegiatan'
         )
+        // Filter digunakan untuk membatasi data sesuai kondisi yang dibutuhkan.
         ->where(
             'kegiatan.id_organisasi',
             $this->idOrganisasiPengurus()
         )
+        // Select menentukan kolom yang dikirim ke proses atau view.
         ->select(
             'keuangan.*',
             'kegiatan.nama_kegiatan'
@@ -1076,12 +1355,15 @@ private function dataLaporanKeuangan($periode)
         'keuangan.tanggal_transaksi',
         $periode
     )
+    // OrderBy mengurutkan data agar tampil sesuai urutan yang dibutuhkan.
     ->orderBy(
         'keuangan.tanggal_transaksi',
         'desc'
     )
     ->get();
 }
+
+// Membersihkan karakter khusus agar aman ditulis ke konten PDF.
 
 private function escapePdfText($text)
 {
@@ -1091,6 +1373,8 @@ private function escapePdfText($text)
         (string) $text
     );
 }
+
+// Menyusun struktur PDF sederhana dari baris teks laporan.
 
 private function buatPdf($baris)
 {
@@ -1147,6 +1431,8 @@ private function buatPdf($baris)
     return $pdf;
 }
 
+// Membuat response unduhan PDF berdasarkan judul, periode, header, dan baris data.
+
 private function downloadPdf($judul, $periode, $header, $rows, $filename)
 {
     $lines = [
@@ -1175,6 +1461,8 @@ private function downloadPdf($judul, $periode, $header, $rows, $filename)
         ]
     );
 }
+
+// Membuat response unduhan Excel berbasis HTML berdasarkan data laporan.
 
 private function downloadExcel($judul, $periode, $header, $rows, $filename)
 {
@@ -1211,6 +1499,8 @@ private function downloadExcel($judul, $periode, $header, $rows, $filename)
     );
 }
 
+// Mengubah koleksi kegiatan menjadi baris data laporan.
+
 private function rowsKegiatan($kegiatan)
 {
     return $kegiatan->map(function ($item) {
@@ -1225,6 +1515,8 @@ private function rowsKegiatan($kegiatan)
     })->toArray();
 }
 
+// Mengubah koleksi keuangan menjadi baris data laporan.
+
 private function rowsKeuangan($keuangan)
 {
     return $keuangan->map(function ($item) {
@@ -1237,6 +1529,8 @@ private function rowsKeuangan($keuangan)
         ];
     })->toArray();
 }
+
+// Mengambil data kegiatan sesuai periode dan mengunduhnya sebagai PDF.
 
 public function exportKegiatanPdf(Request $request)
 {
@@ -1252,6 +1546,8 @@ public function exportKegiatanPdf(Request $request)
     );
 }
 
+// Mengambil data kegiatan sesuai periode dan mengunduhnya sebagai Excel.
+
 public function exportKegiatanExcel(Request $request)
 {
     $periode = $request->get('periode', 'bulan');
@@ -1266,6 +1562,8 @@ public function exportKegiatanExcel(Request $request)
     );
 }
 
+// Mengambil data keuangan sesuai periode dan mengunduhnya sebagai PDF.
+
 public function exportKeuanganPdf(Request $request)
 {
     $periode = $request->get('periode', 'bulan');
@@ -1279,6 +1577,8 @@ public function exportKeuanganPdf(Request $request)
         'laporan-keuangan.pdf'
     );
 }
+
+// Mengambil data keuangan sesuai periode dan mengunduhnya sebagai Excel.
 
 public function exportKeuanganExcel(Request $request)
 {

@@ -1,6 +1,9 @@
+{{-- Halaman Keuangan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Manajemen Keuangan')
+
+{{-- Konten utama halaman Keuangan --}}
 
 @section('content')
 <div class="page-title">
@@ -11,11 +14,15 @@
     <a class="btn primary" href="#tambah-transaksi">+ Tambah Transaksi</a>
 </div>
 
+{{-- Section informasi halaman --}}
+
 <section class="grid three">
     <div class="card stat"><div><p class="muted">Total Pemasukan</p><div class="stat-value green">Rp {{ number_format($totalPemasukan, 0, ',', '.') }}</div></div><div class="tile-icon">🟢</div></div>
     <div class="card stat"><div><p class="muted">Total Pengeluaran</p><div class="stat-value red">Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}</div></div><div class="tile-icon">🔴</div></div>
     <div class="card stat"><div><p class="muted">Saldo</p><div class="stat-value blue">Rp {{ number_format($saldo, 0, ',', '.') }}</div></div><div class="tile-icon">💰</div></div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <div class="split" style="margin-bottom:18px">
@@ -26,7 +33,54 @@
         <button>Export</button>
     </div>
 
+    <form method="GET" action="/keuangan" class="filter-grid" style="margin-bottom:18px">
+        <div class="field" style="margin-bottom:0">
+            <label>Bulan</label>
+            <select name="bulan">
+                <option value="">Semua Bulan</option>
+                @foreach($namaBulan as $angkaBulan => $bulan)
+                    <option value="{{ $angkaBulan }}" {{ (string) $filter['bulan'] === (string) $angkaBulan ? 'selected' : '' }}>
+                        {{ $bulan }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="field" style="margin-bottom:0">
+            <label>Tahun</label>
+            <select name="tahun">
+                <option value="">Semua Tahun</option>
+                @foreach($tahunTransaksi as $tahun)
+                    <option value="{{ $tahun }}" {{ (string) $filter['tahun'] === (string) $tahun ? 'selected' : '' }}>
+                        {{ $tahun }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="field" style="margin-bottom:0">
+            <label>Kegiatan</label>
+            <select name="id_kegiatan">
+                <option value="">Semua Kegiatan</option>
+                @foreach($kegiatan as $item)
+                    <option value="{{ $item->id_kegiatan }}" {{ (string) $filter['id_kegiatan'] === (string) $item->id_kegiatan ? 'selected' : '' }}>
+                        {{ $item->nama_kegiatan }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="field" style="margin-bottom:0; align-self:end">
+            <button class="primary" type="submit" style="width:100%">Filter</button>
+        </div>
+
+        <div class="field" style="margin-bottom:0; align-self:end">
+            <a class="btn" href="/keuangan" style="width:100%">Reset</a>
+        </div>
+    </form>
+
     <div class="table-wrap">
+        {{-- Tabel data --}}
         <table>
             <thead>
                 <tr>
@@ -86,6 +140,8 @@
     </div>
 </section>
 
+{{-- Form input data --}}
+
 <form id="tambah-transaksi" class="card" method="POST" action="/tambah-transaksi">
     @csrf
     <h2>Tambah Transaksi</h2>
@@ -94,6 +150,7 @@
         <div class="field">
             <label>Kegiatan</label>
             <select name="id_kegiatan" required>
+                {{-- Perulangan data untuk ditampilkan ke pengguna --}}
                 @foreach($kegiatan as $item)
                     <option value="{{ $item->id_kegiatan }}">{{ $item->nama_kegiatan }}</option>
                 @endforeach

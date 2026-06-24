@@ -1,8 +1,12 @@
+{{-- Halaman Dashboard --}}
 @extends('layouts.mahasiswa')
 
 @section('title', 'Beranda Mahasiswa')
 
+{{-- Konten utama halaman Dashboard --}}
+
 @section('content')
+{{-- Section informasi halaman --}}
 <section class="hero solid">
     <div>
         <h1><b>Selamat Datang di SIMKOM</b></h1>
@@ -13,6 +17,8 @@
         </div>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <div class="split">
@@ -35,6 +41,8 @@
     </div>
 </section>
 
+{{-- Section informasi halaman --}}
+
 <section class="card">
     <h2>Keuntungan Bergabung</h2>
     <p class="subtitle">Manfaat yang Anda dapatkan dengan bergabung</p>
@@ -44,6 +52,8 @@
         <div class="tile"><div class="tile-icon" style="margin:auto">✓</div><h3>Sertifikat</h3><p class="muted">Dapatkan sertifikat kegiatan</p></div>
     </div>
 </section>
+
+{{-- Section informasi halaman --}}
 
 <section class="notice">
     <div class="hero-icon">i</div>

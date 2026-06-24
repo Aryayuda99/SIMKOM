@@ -1,6 +1,9 @@
+{{-- Halaman Tambah Ukm --}}
 @extends('layouts.admin')
 
 @section('title', 'Tambah UKM')
+
+{{-- Konten utama halaman Tambah Ukm --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Tambahkan data UKM baru ke sistem</p>
     </div>
 </div>
+
+{{-- Form input data --}}
 
 <form class="card" method="POST" action="/simpan-ukm">
     @csrf

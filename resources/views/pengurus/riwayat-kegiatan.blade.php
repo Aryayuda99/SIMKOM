@@ -1,6 +1,9 @@
+{{-- Halaman Riwayat Kegiatan --}}
 @extends('layouts.pengurus')
 
 @section('title', 'Riwayat Kegiatan')
+
+{{-- Konten utama halaman Riwayat Kegiatan --}}
 
 @section('content')
 <div class="page-title">
@@ -9,6 +12,8 @@
         <p class="subtitle">Timeline dan dokumentasi kegiatan yang telah dilaksanakan</p>
     </div>
 </div>
+
+{{-- Section informasi halaman --}}
 
 <section class="card">
     <h2>Timeline Kegiatan</h2>
